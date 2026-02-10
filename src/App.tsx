@@ -13,9 +13,14 @@ import SkillBars from './components/SkillBars';
 import SectionLoader from './components/SectionLoader';
 import TiltCard from './components/TiltCard';
 import ParallaxSymbols from './components/ParallaxSymbols';
+import ToastContainer, { useToasts } from './components/Toast';
+import HackerMode from './components/HackerMode';
+import DigitalClock from './components/DigitalClock';
 import useKonamiCode from './hooks/useKonamiCode';
+import useAchievements from './hooks/useAchievements';
 import {
   ASCII_NAME,
+  MOBILE_ASCII,
   SECTIONS,
   experiences,
   projects,
@@ -31,6 +36,18 @@ function getTimeGreeting(): string {
   return 'Late night browsing?';
 }
 
+// Breadcrumb path builder
+function buildBreadcrumb(section: string): string {
+  const map: Record<string, string> = {
+    about: '~',
+    experience: '~/experience',
+    projects: '~/projects',
+    skills: '~/skills',
+    contact: '~/contact',
+  };
+  return map[section] || '~';
+}
+
 export default function App() {
   const [booted, setBooted] = useState(false);
   const [commandLineOpen, setCommandLineOpen] = useState(false);
@@ -39,11 +56,29 @@ export default function App() {
   const [asciiDone, setAsciiDone] = useState(false);
   const [heroPhase, setHeroPhase] = useState(0);
   const [theme, setTheme] = useState<ThemeName>('green');
+  const [hackerActive, setHackerActive] = useState(false);
+  const [commandCount, setCommandCount] = useState(0);
+  const [sessionStart] = useState(() => Date.now());
+  const [tabScramble, setTabScramble] = useState(false);
   const konamiActivated = useKonamiCode();
+  const { achievements, unlock, consumeToasts, unlockedCount } = useAchievements();
+  const { toasts, addToast, dismissToast } = useToasts();
   const appRef = useRef<HTMLDivElement>(null);
   const greeting = useMemo(() => getTimeGreeting(), []);
+  const isMobile = useMemo(() => window.innerWidth < 600, []);
 
   const handleBootComplete = useCallback(() => setBooted(true), []);
+
+  // Poll for achievement toasts
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const pending = consumeToasts();
+      pending.forEach((a) => {
+        addToast(`Achievement Unlocked!`, `${a.icon} ${a.name} — ${a.desc}`, 'achievement');
+      });
+    }, 300);
+    return () => clearInterval(interval);
+  }, [consumeToasts, addToast]);
 
   // Apply theme to document
   useEffect(() => {
@@ -61,7 +96,7 @@ export default function App() {
       const scrollPct = Math.round(
         (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
       );
-      document.title = `rohan@portfolio:~/${currentSection} [${scrollPct}%]`;
+      document.title = `rohan@portfolio:${buildBreadcrumb(currentSection)} [${scrollPct}%]`;
     };
     window.addEventListener('scroll', updateTitle, { passive: true });
     updateTitle();
@@ -105,6 +140,7 @@ export default function App() {
   useEffect(() => {
     if (konamiActivated) {
       setMatrixIntense(true);
+      unlock('konamiMaster');
       document.body.classList.add('konami-active');
       const timer = setTimeout(() => {
         setMatrixIntense(false);
@@ -112,7 +148,23 @@ export default function App() {
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [konamiActivated]);
+  }, [konamiActivated, unlock]);
+
+  // Tab return scramble effect
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible' && booted) {
+        setTabScramble(true);
+        document.body.classList.add('text-scramble-active');
+        setTimeout(() => {
+          setTabScramble(false);
+          document.body.classList.remove('text-scramble-active');
+        }, 800);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [booted]);
 
   const handleNavigate = useCallback((section: string) => {
     const el = document.getElementById(section);
@@ -120,7 +172,16 @@ export default function App() {
   }, []);
 
   const handleMatrixToggle = useCallback(() => setMatrixIntense((prev) => !prev), []);
-  const handleThemeChange = useCallback((t: ThemeName) => setTheme(t), []);
+  const handleThemeChange = useCallback((t: ThemeName) => {
+    setTheme(t);
+    addToast('Theme Changed', `Switched to ${t} mode`, 'info');
+  }, [addToast]);
+  const handleHack = useCallback(() => setHackerActive(true), []);
+  const handleHackComplete = useCallback(() => {
+    setHackerActive(false);
+    addToast('Hacking Complete', 'ACCESS GRANTED. Welcome back, root.', 'success');
+  }, [addToast]);
+  const handleCommandRun = useCallback(() => setCommandCount((c) => c + 1), []);
 
   return (
     <>
@@ -139,20 +200,25 @@ export default function App() {
         </div>
       )}
 
+      <HackerMode active={hackerActive} onComplete={handleHackComplete} />
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+
       {booted && (
-        <div className="app" ref={appRef}>
-          {/* ---- NAV ---- */}
+        <div className={`app ${tabScramble ? 'scramble' : ''}`} ref={appRef}>
+          {/* ---- NAV with breadcrumb + clock ---- */}
           <motion.nav
             className="nav"
             initial={{ y: -60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <div className="nav-prompt">
-              <span className="user">rohan</span>
-              <span className="at">@</span>
-              <span className="host">portfolio</span>
-              <span className="path">:~$</span>
+            <div className="nav-left">
+              <div className="nav-prompt">
+                <span className="user">rohan</span>
+                <span className="at">@</span>
+                <span className="host">portfolio</span>
+                <span className="path">:{buildBreadcrumb(currentSection)}$</span>
+              </div>
             </div>
             <div className="nav-links">
               {SECTIONS.map((s, i) => (
@@ -163,6 +229,9 @@ export default function App() {
                   </a>
                 </span>
               ))}
+            </div>
+            <div className="nav-clock">
+              <DigitalClock />
             </div>
           </motion.nav>
 
@@ -185,7 +254,7 @@ export default function App() {
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
                 <AsciiTypeWriter
-                  text={ASCII_NAME}
+                  text={isMobile ? MOBILE_ASCII : ASCII_NAME}
                   lineDelay={45}
                   className="hero-ascii"
                   onComplete={() => {
@@ -409,7 +478,7 @@ export default function App() {
               <span className="footer-cursor" />
               <br /><br />
               <span className="footer-meta">
-                Built with React + TypeScript + Motion · Ctrl+` to open terminal · Type "theme" to customize
+                Built with React + TypeScript + Motion · Ctrl+` to open terminal · {unlockedCount} achievements unlocked
               </span>
             </footer>
           </div>
@@ -429,6 +498,12 @@ export default function App() {
             onMatrixIntensify={handleMatrixToggle}
             onThemeChange={handleThemeChange}
             currentTheme={theme}
+            onHack={handleHack}
+            achievements={achievements}
+            onAchievement={unlock}
+            commandCount={commandCount}
+            onCommandRun={handleCommandRun}
+            sessionStart={sessionStart}
           />
         </div>
       )}

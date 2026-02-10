@@ -320,3 +320,190 @@ a:hover::after {
 .konami-active .app {
   animation: horizontal-tear 0.1s steps(2) infinite;
 }
+
+/* ================================================
+   TOAST NOTIFICATIONS
+   ================================================ */
+
+.toast-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10003;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  max-width: 320px;
+}
+
+.toast {
+  pointer-events: auto;
+  padding: 10px 16px;
+  border-radius: 3px;
+  border: 1px solid var(--border-bright);
+  background: rgba(18, 22, 30, 0.96);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.toast-achievement {
+  border-color: var(--amber);
+  box-shadow: 0 4px 20px rgba(224, 160, 64, 0.1);
+}
+
+.toast-info {
+  border-color: var(--cyan);
+  box-shadow: 0 4px 20px rgba(86, 182, 194, 0.08);
+}
+
+.toast-success {
+  border-color: var(--green-dim);
+  box-shadow: 0 4px 20px rgba(68, 184, 106, 0.08);
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.toast-badge {
+  color: var(--amber);
+  font-size: 0.85rem;
+}
+
+.toast-title {
+  color: var(--green-bright);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+.toast-message {
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+}
+
+/* ================================================
+   HACKER MODE OVERLAY
+   ================================================ */
+
+.hacker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10004;
+  background: rgba(0, 0, 0, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+.hacker-hex {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.55rem;
+  color: rgba(99, 214, 141, 0.15);
+  font-family: var(--font-mono);
+  letter-spacing: 2px;
+}
+
+.hacker-content {
+  max-width: 600px;
+  padding: 40px;
+}
+
+.hacker-header {
+  color: var(--red);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.hacker-line {
+  font-size: 0.72rem;
+  color: var(--green-dim);
+  line-height: 1.8;
+  animation: slide-up 0.15s ease forwards;
+}
+
+.hacker-progress {
+  color: var(--green-bright);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.hacker-success { color: var(--green-bright); }
+.hacker-danger { color: var(--red); }
+
+.hacker-cursor {
+  color: var(--green-bright);
+  animation: blink 0.5s step-end infinite;
+}
+
+.hacker-granted {
+  text-align: center;
+}
+
+.hacker-granted-text {
+  font-family: var(--font-pixel);
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: var(--green-bright);
+  text-shadow: 0 0 20px var(--green-dim), 0 0 60px var(--green-muted);
+  letter-spacing: 8px;
+  animation: glow-pulse 1s ease-in-out infinite;
+}
+
+.hacker-granted-sub {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 12px;
+}
+
+/* ================================================
+   TEXT SCRAMBLE ON TAB RETURN
+   ================================================ */
+
+@keyframes text-scramble {
+  0% { filter: blur(3px) brightness(1.3); letter-spacing: 4px; }
+  30% { filter: blur(2px) brightness(1.1); letter-spacing: 2px; }
+  60% { filter: blur(1px) brightness(1.05); letter-spacing: 1px; }
+  100% { filter: blur(0) brightness(1); letter-spacing: normal; }
+}
+
+.text-scramble-active * {
+  animation: text-scramble 0.8s ease-out forwards !important;
+}
+
+/* ================================================
+   DIGITAL CLOCK
+   ================================================ */
+
+.digital-clock {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.clock-digit {
+  color: var(--green-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.clock-sep {
+  color: var(--text-dim);
+  animation: blink 1s step-end infinite;
+  margin: 0 1px;
+}

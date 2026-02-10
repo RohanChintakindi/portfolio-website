@@ -202,7 +202,91 @@ export const skillCategories: SkillCategory[] = [
   },
 ];
 
+export const MOBILE_ASCII = `
+ ██████╗   ██████╗
+ ██╔══██╗ ██╔════╝
+ ██████╔╝ ██║
+ ██╔══██╗ ██║
+ ██║  ██║ ╚██████╗
+ ╚═╝  ╚═╝  ╚═════╝`.trim();
+
 export const interests = 'Poker, Guitar, Music Production, Football, Competitive Programming, Hackathons, Chicago Bears';
+
+export const TYPING_SNIPPETS = [
+  'const data = await fetch(url);',
+  'export default function App() {',
+  'git commit -m "ship it"',
+  'docker compose up -d --build',
+  'SELECT * FROM users WHERE id = 1;',
+  'npm run build && npm run deploy',
+  'for (let i = 0; i < n; i++) {',
+  'const [state, setState] = useState();',
+];
+
+export const RESUME_LINES = [
+  '┌────────────────────────────────────────────────────────┐',
+  '│              R O H A N   C H I N T A K I N D I         │',
+  '│         CS + Math @ University of Maryland              │',
+  '│   rchintak@umd.edu │ 240-438-1333 │ github/Rohan...    │',
+  '├────────────────────────────────────────────────────────┤',
+  '│  EXPERIENCE                                             │',
+  '│  ─────────                                              │',
+  '│  Research Assistant     │ UMD CS           │ 2026–now   │',
+  '│  Full Stack Engineer    │ Children\'s Nat.  │ 2025–now   │',
+  '│  Jr. Quant Analyst      │ Apex Fund        │ 2025–now   │',
+  '│  Jr. Cloud Associate    │ Cloudforce       │ 2025–now   │',
+  '│  Cloud Intern           │ Cloudforce       │ 2025       │',
+  '│  AI Council Member      │ BoodleBox        │ 2025–now   │',
+  '│  Researcher             │ FIRE @ UMD       │ 2024–now   │',
+  '├────────────────────────────────────────────────────────┤',
+  '│  PROJECTS                                               │',
+  '│  ────────                                               │',
+  '│  SuiTix       │ Winner: Best Use of Sui @ Cal Hacks     │',
+  '│  MediCall      │ 6th @ Texas A&M AI Competition ($2500) │',
+  '│  ClinicFlow AI │ Winner @ BisonBytes 2025               │',
+  '│  Roameo        │ @ Bitcamp 2025                         │',
+  '├────────────────────────────────────────────────────────┤',
+  '│  SKILLS                                                 │',
+  '│  ──────                                                 │',
+  '│  Lang:  Java Python TypeScript C C# Rust OCaml SQL      │',
+  '│  Frame: React Flask .NET Node.js REST OAuth2            │',
+  '│  Cloud: Azure AWS Docker GitHub Actions CI/CD           │',
+  '│  ML/AI: PyTorch Fine-Tuning GPU Inference               │',
+  '└────────────────────────────────────────────────────────┘',
+];
+
+export const SECRET_ROOM = [
+  '┌─────────────────────────────────────────┐',
+  '│    /dev/null — THE SECRET ROOM          │',
+  '├─────────────────────────────────────────┤',
+  '│                                         │',
+  '│  You found it. Here\'s the real me:      │',
+  '│                                         │',
+  '│  > Biggest flex: 85%+ win rate on       │',
+  '│    options with zero drawdown            │',
+  '│                                         │',
+  '│  > Favorite language: Rust (but I ship  │',
+  '│    in TypeScript because deadlines)      │',
+  '│                                         │',
+  '│  > Hot take: Vim > VS Code > Emacs      │',
+  '│    (yes I use Cursor, fight me)          │',
+  '│                                         │',
+  '│  > Currently learning: how LLMs lie     │',
+  '│    in diplomatic negotiations            │',
+  '│                                         │',
+  '│  > Music: producing beats at 2am        │',
+  '│    when I should be debugging            │',
+  '│                                         │',
+  '│  > Chicago Bears fan since birth.       │',
+  '│    Yes, it hurts. No, I won\'t switch.   │',
+  '│                                         │',
+  '│  > Fueled by: iced coffee + spite       │',
+  '│                                         │',
+  '│  Thanks for exploring. You\'re the type  │',
+  '│  of person I\'d want to work with.       │',
+  '│                                         │',
+  '└─────────────────────────────────────────┘',
+];
 
 export const FORTUNES = [
   '"The best way to predict the future is to implement it." — David Heinemeier Hansson',

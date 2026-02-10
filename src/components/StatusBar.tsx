@@ -31,7 +31,7 @@ export default function StatusBar({ currentSection, onCommandLineToggle, command
   const [scrollPct, setScrollPct] = useState(0);
   const [networkActivity, setNetworkActivity] = useState<boolean[]>([false, false, false, false, false]);
   const PID = 31337;
-  const networkRef = useRef<ReturnType<typeof setInterval>>();
+  const networkRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
   useEffect(() => {
     const interval = setInterval(() => setUptime((u) => u + 1), 1000);

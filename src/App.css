@@ -32,6 +32,18 @@
   align-items: center;
   justify-content: space-between;
   font-size: 0.8rem;
+  gap: 12px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.nav-clock {
+  flex-shrink: 0;
 }
 
 .nav-prompt {
@@ -39,7 +51,7 @@
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0;
 }
 
 .nav-prompt .user { color: var(--cyan); }
@@ -1021,7 +1033,8 @@
 
   .nav { flex-direction: column; gap: 8px; align-items: flex-start; }
   .nav-links { justify-content: flex-start; }
-  .hero-ascii { font-size: clamp(0.25rem, 2.5vw, 0.55rem); }
+  .nav-clock { display: none; }
+  .hero-ascii { font-size: clamp(0.35rem, 2.5vw, 0.55rem); }
   .projects-grid { grid-template-columns: 1fr; }
 
   .htop-process-header, .htop-processes { display: none; }
@@ -1036,6 +1049,10 @@
   .status-bar-center { display: none; }
   .command-line { max-height: 250px; }
   .command-line-output { max-height: 160px; }
+
+  .toast-container { max-width: 260px; top: 8px; right: 8px; }
+  .hacker-content { padding: 20px; }
+  .hacker-line { font-size: 0.6rem; }
 }
 
 @media (max-width: 480px) {

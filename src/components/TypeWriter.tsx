@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 interface TypeWriterProps {
   text: string;
@@ -68,9 +68,7 @@ export function AsciiTypeWriter({
   const lines = text.split('\n');
   const [visibleLines, setVisibleLines] = useState(0);
 
-  const handleLineComplete = useCallback(() => {
-    // Not used per-line anymore since we reveal by count
-  }, []);
+  // Lines are revealed by count, no per-line callback needed
 
   useEffect(() => {
     if (visibleLines >= lines.length) {
