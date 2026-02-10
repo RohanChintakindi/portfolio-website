@@ -1,32 +1,32 @@
 :root {
-  /* ---- Backgrounds (true black) ---- */
-  --bg-primary: #050505;
-  --bg-secondary: #0a0a0a;
-  --bg-card: #0d0d0d;
-  --bg-card-hover: #141414;
+  /* ---- Backgrounds (deep blue-black) ---- */
+  --bg-primary: #0a0a14;
+  --bg-secondary: #0f0f1c;
+  --bg-card: #141426;
+  --bg-card-hover: #1a1a32;
 
-  /* ---- Green (neon but not blinding) ---- */
-  --green-bright: #39ff75;
-  --green-dim: #2bcc5b;
-  --green-muted: #1da84550;
-  --green-ghost: #2bcc5b0c;
-  --green-glow: 0 0 10px #2bcc5b40, 0 0 30px #1da84520;
+  /* ---- Primary accent (soft lavender) ---- */
+  --green-bright: #a78bfa;
+  --green-dim: #8b74e0;
+  --green-muted: #7c6bcf50;
+  --green-ghost: #7c6bcf0c;
+  --green-glow: 0 0 10px #7c6bcf40, 0 0 30px #7c6bcf20;
 
-  /* ---- Accents (vivid neon, slightly tamed) ---- */
-  --amber: #ffb020;
-  --red: #ff4444;
-  --cyan: #00e5ff;
-  --magenta: #da70ff;
-  --purple: #a78bfa;
+  /* ---- Accents (refined multi-color) ---- */
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --cyan: #38bdf8;
+  --magenta: #f472b6;
+  --purple: #c084fc;
 
-  /* ---- Text ---- */
-  --text-primary: #d0d0d0;
-  --text-secondary: #707070;
-  --text-dim: #404040;
+  /* ---- Text (warm cream) ---- */
+  --text-primary: #e2e0dc;
+  --text-secondary: #8888a0;
+  --text-dim: #4a4a64;
 
   /* ---- Borders ---- */
-  --border: #1a1a1a;
-  --border-bright: #2a2a2a;
+  --border: #1a1a2e;
+  --border-bright: #28283e;
 
   /* ---- Typography ---- */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
@@ -36,31 +36,31 @@
 
 /* ---- Theme variants ---- */
 [data-theme="amber"] {
-  --green-bright: #ffb020;
-  --green-dim: #cc8a10;
-  --green-muted: #cc8a1050;
-  --green-ghost: #cc8a100c;
+  --green-bright: #f59e0b;
+  --green-dim: #d97706;
+  --green-muted: #d9770650;
+  --green-ghost: #d977060c;
 }
 
 [data-theme="cyan"] {
-  --green-bright: #00e5ff;
-  --green-dim: #00b8cc;
-  --green-muted: #00b8cc50;
-  --green-ghost: #00b8cc0c;
+  --green-bright: #38bdf8;
+  --green-dim: #0ea5e9;
+  --green-muted: #0ea5e950;
+  --green-ghost: #0ea5e90c;
 }
 
 [data-theme="purple"] {
-  --green-bright: #da70ff;
-  --green-dim: #b050dd;
-  --green-muted: #b050dd50;
-  --green-ghost: #b050dd0c;
+  --green-bright: #f472b6;
+  --green-dim: #ec4899;
+  --green-muted: #ec489950;
+  --green-ghost: #ec48990c;
 }
 
 [data-theme="red"] {
-  --green-bright: #ff4444;
-  --green-dim: #cc2020;
-  --green-muted: #cc202050;
-  --green-ghost: #cc20200c;
+  --green-bright: #ef4444;
+  --green-dim: #dc2626;
+  --green-muted: #dc262650;
+  --green-ghost: #dc26260c;
 }
 
 *, *::before, *::after {
@@ -306,7 +306,7 @@ a:hover::after {
   justify-content: center;
   pointer-events: none;
   animation: konami-flash 5s ease-in-out forwards;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(6, 6, 16, 0.7);
 }
 
 .konami-text {
@@ -342,7 +342,7 @@ a:hover::after {
   padding: 10px 16px;
   border-radius: 3px;
   border: 1px solid var(--border-bright);
-  background: rgba(5, 5, 5, 0.96);
+  background: rgba(8, 8, 18, 0.96);
   backdrop-filter: blur(8px);
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -352,17 +352,17 @@ a:hover::after {
 
 .toast-achievement {
   border-color: var(--amber);
-  box-shadow: 0 4px 20px rgba(224, 160, 64, 0.1);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);
 }
 
 .toast-info {
   border-color: var(--cyan);
-  box-shadow: 0 4px 20px rgba(86, 182, 194, 0.08);
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.08);
 }
 
 .toast-success {
   border-color: var(--green-dim);
-  box-shadow: 0 4px 20px rgba(68, 184, 106, 0.08);
+  box-shadow: 0 4px 20px rgba(139, 116, 224, 0.08);
 }
 
 .toast-header {
@@ -397,7 +397,7 @@ a:hover::after {
   position: fixed;
   inset: 0;
   z-index: 10004;
-  background: rgba(0, 0, 0, 0.96);
+  background: rgba(6, 6, 16, 0.96);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -410,7 +410,7 @@ a:hover::after {
   top: 10px;
   right: 10px;
   font-size: 0.55rem;
-  color: rgba(57, 255, 117, 0.15);
+  color: rgba(167, 139, 250, 0.15);
   font-family: var(--font-mono);
   letter-spacing: 2px;
 }

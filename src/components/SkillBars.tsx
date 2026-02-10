@@ -101,7 +101,7 @@ export default function SkillBars() {
 
       {/* Color blocks */}
       <div className="htop-color-row">
-        {['#ff3333', '#ffb000', '#00ff41', '#00d4ff', '#ff00ff', '#8b5cf6', '#f97316', '#ffffff'].map(
+        {['#ef4444', '#f59e0b', '#a78bfa', '#38bdf8', '#f472b6', '#c084fc', '#34d399', '#e2e0dc'].map(
           (c) => (
             <div
               key={c}

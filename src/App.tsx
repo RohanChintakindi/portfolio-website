@@ -22,18 +22,19 @@ import ParticleNetwork from './components/ParticleNetwork';
 import Spotlight from './components/Spotlight';
 import MagneticWrap from './components/MagneticWrap';
 import DecryptText from './components/DecryptText';
-import StatsBar from './components/StatsBar';
-import Marquee from './components/Marquee';
 import BackToTop from './components/BackToTop';
 import CursorGlow from './components/CursorGlow';
 import useKonamiCode from './hooks/useKonamiCode';
 import useAchievements from './hooks/useAchievements';
+import AnimatedCounter from './components/AnimatedCounter';
 import {
   ASCII_NAME,
   MOBILE_ASCII,
   SECTIONS,
   experiences,
   projects,
+  CURRENTLY,
+  STATS,
   type ThemeName,
 } from './data/portfolio';
 
@@ -291,6 +292,23 @@ export default function App() {
 
               {heroPhase >= 2 && (
                 <motion.div
+                  className="hero-currently"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                >
+                  {CURRENTLY.map((item) => (
+                    <div key={item.label} className="hero-currently-item">
+                      <span className="hero-currently-icon">{item.icon}</span>
+                      <span className="hero-currently-label">{item.label}</span>
+                      <span className="hero-currently-value">{item.value}</span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+
+              {heroPhase >= 2 && (
+                <motion.div
                   className="hero-links"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -341,18 +359,50 @@ export default function App() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4 }}
                 >
-                  <div className="edu-card-content">
-                    <div className="edu-school">University of Maryland, College Park</div>
-                    <div className="edu-degree">Bachelor of Science in Computer Science and Mathematics</div>
+                  <div className="edu-main">
+                    <div className="edu-card-content">
+                      <div className="edu-school">University of Maryland, College Park</div>
+                      <div className="edu-degree">Bachelor of Science in Computer Science and Mathematics</div>
+                    </div>
+                    <div className="edu-date-badge">Aug 2024 — Dec 2027</div>
                   </div>
-                  <div className="edu-date">Aug 2024 — Dec 2027</div>
+                  <div className="edu-coursework">
+                    <div className="edu-coursework-label">Relevant Coursework</div>
+                    <div className="edu-coursework-tags">
+                      {['Data Structures', 'Algorithms', 'Computer Systems', 'Linear Algebra', 'Discrete Math', 'Probability', 'Object-Oriented Programming', 'Web Development'].map((c) => (
+                        <span key={c}>{c}</span>
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
 
-                <StatsBar />
+                {/* ---- STATS ---- */}
+                <motion.div
+                  className="stats-grid"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  style={{ marginTop: 28 }}
+                >
+                  {STATS.map((stat, i) => (
+                    <motion.div
+                      key={stat.label}
+                      className="stat-card"
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.05 * i, duration: 0.4 }}
+                    >
+                      <div className="stat-number">
+                        <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={1800} />
+                      </div>
+                      <div className="stat-label">{stat.label}</div>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
             </SectionLoader>
-
-            <Marquee />
 
             {/* ---- EXPERIENCE (TIMELINE) ---- */}
             <SectionLoader command="ls -la ~/experience/" id="experience">
@@ -451,7 +501,7 @@ export default function App() {
               </div>
             </SectionLoader>
 
-            {/* ---- CONTACT ---- */}
+            {/* ---- CONTACT — BENTO ---- */}
             <SectionLoader command="cat ~/.contact" id="contact">
               <div className="section-inner">
                 <div className="section-header">
@@ -460,45 +510,86 @@ export default function App() {
                 </div>
 
                 <motion.div
-                  className="contact-cta"
-                  initial={{ opacity: 0, y: 12 }}
+                  className="bento-contact"
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <p className="contact-cta-text">
-                    Interested in working together? Let's connect.
-                  </p>
-                  <MagneticWrap strength={0.25} radius={100}>
-                    <a href="mailto:rchintak@umd.edu" className="contact-cta-btn">
-                      <span className="contact-cta-icon">$</span>
-                      <span>sudo hire rohan</span>
-                    </a>
-                  </MagneticWrap>
-                </motion.div>
+                  {/* CTA — spans 2 columns */}
+                  <div className="bento-card bento-cta">
+                    <div className="bento-cta-headline">Let's Build Something</div>
+                    <p className="bento-cta-sub">
+                      Interested in working together? I'm always open to discussing new projects,
+                      research collaborations, or full-time opportunities.
+                    </p>
+                    <MagneticWrap strength={0.25} radius={100}>
+                      <a href="mailto:rchintak@umd.edu" className="bento-cta-btn">
+                        <span className="bento-cta-icon">$</span>
+                        <span>sudo hire rohan</span>
+                      </a>
+                    </MagneticWrap>
+                  </div>
 
-                <div className="contact-grid">
-                  {[
-                    { href: 'mailto:rchintak@umd.edu', label: 'Email', value: 'rchintak@umd.edu', icon: '@' },
-                    { href: 'tel:240-438-1333', label: 'Phone', value: '240-438-1333', icon: '#' },
-                    { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', value: 'rohan-chintakindi', ext: true, icon: 'in' },
-                    { href: 'https://github.com/RohanChintakindi', label: 'GitHub', value: 'RohanChintakindi', ext: true, icon: '~/' },
-                    { href: 'https://devpost.com/rchintak', label: 'Devpost', value: 'rchintak', ext: true, icon: '<>' },
-                  ].map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      className="contact-item"
-                      {...(item.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    >
-                      <div className="contact-icon">{item.icon}</div>
-                      <div>
-                        <div className="contact-label">{item.label}</div>
-                        <div className="contact-value">{item.value}</div>
-                      </div>
-                    </a>
-                  ))}
-                </div>
+                  {/* Status */}
+                  <div className="bento-card bento-status">
+                    <div className="bento-status-dot" />
+                    <div className="bento-status-label">Open to Work</div>
+                    <div className="bento-status-sub">Available for internships & full-time</div>
+                  </div>
+
+                  {/* Email */}
+                  <a href="mailto:rchintak@umd.edu" className="bento-card bento-info">
+                    <div className="bento-icon">@</div>
+                    <div>
+                      <div className="bento-info-label">Email</div>
+                      <div className="bento-info-value">rchintak@umd.edu</div>
+                    </div>
+                  </a>
+
+                  {/* GitHub */}
+                  <a href="https://github.com/RohanChintakindi" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
+                    <div className="bento-icon">~/</div>
+                    <div>
+                      <div className="bento-info-label">GitHub</div>
+                      <div className="bento-info-value">RohanChintakindi</div>
+                    </div>
+                  </a>
+
+                  {/* Location */}
+                  <div className="bento-card bento-location">
+                    <div className="bento-coords">38.9897° N, 76.9378° W</div>
+                    <div className="bento-location-name">College Park, MD</div>
+                    <div className="bento-location-flag">US</div>
+                  </div>
+
+                  {/* LinkedIn */}
+                  <a href="https://linkedin.com/in/rohan-chintakindi" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
+                    <div className="bento-icon">in</div>
+                    <div>
+                      <div className="bento-info-label">LinkedIn</div>
+                      <div className="bento-info-value">rohan-chintakindi</div>
+                    </div>
+                  </a>
+
+                  {/* Devpost */}
+                  <a href="https://devpost.com/rchintak" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
+                    <div className="bento-icon">&lt;&gt;</div>
+                    <div>
+                      <div className="bento-info-label">Devpost</div>
+                      <div className="bento-info-value">rchintak</div>
+                    </div>
+                  </a>
+
+                  {/* Phone */}
+                  <a href="tel:240-438-1333" className="bento-card bento-info">
+                    <div className="bento-icon">#</div>
+                    <div>
+                      <div className="bento-info-label">Phone</div>
+                      <div className="bento-info-value">240-438-1333</div>
+                    </div>
+                  </a>
+                </motion.div>
               </div>
             </SectionLoader>
 

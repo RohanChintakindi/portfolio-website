@@ -139,7 +139,7 @@ export const projects: Project[] = [
     desc: 'Blockchain-based ticketing & loyalty platform on Sui with transparent resale, policy-enforced transfers, on-chain loyalty tiers, and dynamic pricing via a Next.js + Sui dApp Kit frontend.',
     tech: ['Sui', 'Move', 'Next.js', 'TypeScript', 'React', 'Tailwind'],
     cmd: './run suitix --demo',
-    accent: '#00e5ff',
+    accent: '#38bdf8',
   },
   {
     name: 'MediCall',
@@ -147,7 +147,7 @@ export const projects: Project[] = [
     desc: 'Multilingual voice-first healthcare assistant for triage, scheduling, and insurance verification with real-time speech synthesis. Designed shared deployments enabling instant hospital onboarding with ~30% cost reduction.',
     tech: ['OpenAI', 'ElevenLabs', 'Twilio', 'n8n', 'Next.js', 'Flask'],
     cmd: './run medicall --voice',
-    accent: '#da70ff',
+    accent: '#f472b6',
   },
   {
     name: 'ClinicFlow AI',
@@ -155,7 +155,7 @@ export const projects: Project[] = [
     desc: 'Voice-first AI helpdesk automating clinical triage, appointment booking, and follow-ups. Multi-agent workflows for scheduling, reminders, and analytics with a real-time monitoring dashboard.',
     tech: ['OpenAI', 'Twilio', 'n8n', 'MongoDB', 'Flask', 'Next.js'],
     cmd: './run clinicflow --start',
-    accent: '#ffb020',
+    accent: '#f59e0b',
   },
   {
     name: 'Roameo',
@@ -163,7 +163,7 @@ export const projects: Project[] = [
     desc: 'Conversational AI travel planner automating trip booking through chat and voice. GPT-4 + Google APIs for real-time itineraries with ElevenLabs speech and n8n-powered automation workflows.',
     tech: ['OpenAI', 'Gemini', 'ElevenLabs', 'Twilio', 'React', 'Flask'],
     cmd: './run roameo --plan',
-    accent: '#39ff75',
+    accent: '#a78bfa',
   },
 ];
 
@@ -179,31 +179,31 @@ export const skillCategories: SkillCategory[] = [
     label: 'Languages',
     value: 'Java, Python, TypeScript, JavaScript, C, C#, Rust, OCaml, SQL, HTML/CSS, Assembly',
     usage: 94,
-    color: '#39ff75',
+    color: '#a78bfa',
   },
   {
     label: 'Frameworks',
     value: 'React, Flask, .NET, Node.js, REST APIs, OAuth2, CQRS, Clean Architecture',
     usage: 88,
-    color: '#00e5ff',
+    color: '#38bdf8',
   },
   {
     label: 'Systems',
     value: 'UNIX/Linux, Bash',
     usage: 72,
-    color: '#ffb020',
+    color: '#f59e0b',
   },
   {
     label: 'Cloud/DevOps',
     value: 'Azure, AWS, Docker, GitHub Actions, CI/CD',
     usage: 81,
-    color: '#da70ff',
+    color: '#f472b6',
   },
   {
     label: 'ML/AI',
     value: 'PyTorch, Model Fine-Tuning, GPU Inference Pipelines',
     usage: 76,
-    color: '#ff4444',
+    color: '#ef4444',
   },
 ];
 
@@ -308,3 +308,16 @@ export const FORTUNES = [
 
 export const THEMES = ['green', 'amber', 'cyan', 'purple', 'red'] as const;
 export type ThemeName = typeof THEMES[number];
+
+export const CURRENTLY = [
+  { label: 'Building', value: 'LLM diplomacy agents', icon: '>' },
+  { label: 'Learning', value: 'Rust + systems programming', icon: '#' },
+  { label: 'Reading', value: 'Designing Data-Intensive Applications', icon: '~' },
+] as const;
+
+export const STATS = [
+  { label: 'Roles', value: 7, suffix: '+' },
+  { label: 'Hackathon Wins', value: 4, suffix: '' },
+  { label: 'Options Win Rate', value: 85, suffix: '%' },
+  { label: 'Tech Stacks', value: 10, suffix: '+' },
+] as const;
