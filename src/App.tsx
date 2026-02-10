@@ -16,6 +16,8 @@ import ParallaxSymbols from './components/ParallaxSymbols';
 import ToastContainer, { useToasts } from './components/Toast';
 import HackerMode from './components/HackerMode';
 import DigitalClock from './components/DigitalClock';
+import ScrollProgress from './components/ScrollProgress';
+import GradientOrbs from './components/GradientOrbs';
 import useKonamiCode from './hooks/useKonamiCode';
 import useAchievements from './hooks/useAchievements';
 import {
@@ -36,7 +38,6 @@ function getTimeGreeting(): string {
   return 'Late night browsing?';
 }
 
-// Breadcrumb path builder
 function buildBreadcrumb(section: string): string {
   const map: Record<string, string> = {
     about: '~',
@@ -59,7 +60,6 @@ export default function App() {
   const [hackerActive, setHackerActive] = useState(false);
   const [commandCount, setCommandCount] = useState(0);
   const [sessionStart] = useState(() => Date.now());
-  const [tabScramble, setTabScramble] = useState(false);
   const konamiActivated = useKonamiCode();
   const { achievements, unlock, consumeToasts, unlockedCount } = useAchievements();
   const { toasts, addToast, dismissToast } = useToasts();
@@ -80,13 +80,10 @@ export default function App() {
     return () => clearInterval(interval);
   }, [consumeToasts, addToast]);
 
-  // Apply theme to document
+  // Apply theme
   useEffect(() => {
-    if (theme === 'green') {
-      document.documentElement.removeAttribute('data-theme');
-    } else {
-      document.documentElement.setAttribute('data-theme', theme);
-    }
+    if (theme === 'green') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
   // Dynamic page title
@@ -103,7 +100,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', updateTitle);
   }, [booted, currentSection]);
 
-  // Keyboard shortcut for terminal
+  // Terminal shortcut
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === '`') {
@@ -115,7 +112,7 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
-  // Track current section on scroll
+  // Track current section
   useEffect(() => {
     if (!booted) return;
     const handleScroll = () => {
@@ -136,7 +133,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [booted]);
 
-  // Konami code
+  // Konami
   useEffect(() => {
     if (konamiActivated) {
       setMatrixIntense(true);
@@ -149,22 +146,6 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [konamiActivated, unlock]);
-
-  // Tab return scramble effect
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible' && booted) {
-        setTabScramble(true);
-        document.body.classList.add('text-scramble-active');
-        setTimeout(() => {
-          setTabScramble(false);
-          document.body.classList.remove('text-scramble-active');
-        }, 800);
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => document.removeEventListener('visibilitychange', handleVisibility);
-  }, [booted]);
 
   const handleNavigate = useCallback((section: string) => {
     const el = document.getElementById(section);
@@ -188,6 +169,7 @@ export default function App() {
       {!booted && <BootSequence onComplete={handleBootComplete} />}
 
       <MatrixRain intense={matrixIntense} />
+      <GradientOrbs />
       <ParallaxSymbols />
       <div className="scanlines" />
       <div className="noise-overlay" />
@@ -204,8 +186,10 @@ export default function App() {
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
       {booted && (
-        <div className={`app ${tabScramble ? 'scramble' : ''}`} ref={appRef}>
-          {/* ---- NAV with breadcrumb + clock ---- */}
+        <div className="app" ref={appRef}>
+          <ScrollProgress />
+
+          {/* ---- NAV ---- */}
           <motion.nav
             className="nav"
             initial={{ y: -60, opacity: 0 }}
@@ -238,21 +222,22 @@ export default function App() {
           <div className="app-content">
             {/* ---- HERO ---- */}
             <section className="hero" id="about">
-              {/* Time-based greeting */}
               <motion.div
                 className="hero-greeting"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.6 }}
               >
                 {greeting}
               </motion.div>
 
               <motion.div
+                className="hero-ascii-wrapper"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
+                <div className="hero-glow" />
                 <AsciiTypeWriter
                   text={isMobile ? MOBILE_ASCII : ASCII_NAME}
                   lineDelay={45}
@@ -301,10 +286,10 @@ export default function App() {
                   transition={{ delay: 0.2, duration: 0.4 }}
                 >
                   {[
-                    { href: 'mailto:rchintak@umd.edu', label: 'rchintak@umd.edu' },
-                    { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', ext: true },
-                    { href: 'https://github.com/RohanChintakindi', label: 'GitHub', ext: true },
-                    { href: 'https://devpost.com/rchintak', label: 'Devpost', ext: true },
+                    { href: 'mailto:rchintak@umd.edu', label: 'rchintak@umd.edu', icon: '@' },
+                    { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', ext: true, icon: 'in' },
+                    { href: 'https://github.com/RohanChintakindi', label: 'GitHub', ext: true, icon: '~/' },
+                    { href: 'https://devpost.com/rchintak', label: 'Devpost', ext: true, icon: '<>' },
                   ].map((link) => (
                     <a
                       key={link.label}
@@ -312,7 +297,8 @@ export default function App() {
                       className="hero-link"
                       {...(link.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     >
-                      <span className="link-icon">&gt;</span> {link.label}
+                      <span className="link-icon">{link.icon}</span>
+                      <span>{link.label}</span>
                     </a>
                   ))}
                 </motion.div>
@@ -324,7 +310,8 @@ export default function App() {
                 animate={{ opacity: asciiDone ? 1 : 0 }}
                 transition={{ delay: 1, duration: 0.5 }}
               >
-                [ scroll down · Ctrl+` for terminal ]
+                <span className="scroll-arrow">v</span>
+                <span>scroll down · Ctrl+` for terminal</span>
               </motion.div>
             </section>
 
@@ -342,7 +329,7 @@ export default function App() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4 }}
                 >
-                  <div>
+                  <div className="edu-card-content">
                     <div className="edu-school">University of Maryland, College Park</div>
                     <div className="edu-degree">Bachelor of Science in Computer Science and Mathematics</div>
                   </div>
@@ -351,43 +338,51 @@ export default function App() {
               </div>
             </SectionLoader>
 
-            {/* ---- EXPERIENCE ---- */}
+            {/* ---- EXPERIENCE (TIMELINE) ---- */}
             <SectionLoader command="ls -la ~/experience/" id="experience">
               <div className="section-inner">
                 <div className="section-header">
                   <h2 className="section-title">Experience</h2>
                   <div className="section-divider" />
                 </div>
-                {experiences.map((exp, i) => (
-                  <motion.div
-                    key={i}
-                    className="exp-card"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-40px' }}
-                    transition={{ delay: i * 0.06, duration: 0.4 }}
-                  >
-                    <div className="exp-card-bar">
-                      <span className="exp-card-dot red" />
-                      <span className="exp-card-dot amber" />
-                      <span className="exp-card-dot green" />
-                      <span className="exp-card-path">{exp.path}</span>
-                      <span className="exp-card-date">{exp.date}</span>
-                    </div>
-                    <div className="exp-card-body">
-                      <div className="exp-card-role">{exp.role}</div>
-                      <div className="exp-card-company">{exp.company}</div>
-                      <div className="exp-card-location">{exp.location}</div>
-                      <ul className="exp-card-bullets">
-                        {exp.bullets.map((b, j) => <li key={j}>{b}</li>)}
-                      </ul>
-                    </div>
-                  </motion.div>
-                ))}
+                <div className="timeline">
+                  <div className="timeline-line" />
+                  {experiences.map((exp, i) => (
+                    <motion.div
+                      key={i}
+                      className="timeline-item"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ delay: i * 0.06, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    >
+                      <div className="timeline-marker">
+                        <div className="timeline-dot" />
+                      </div>
+                      <div className="exp-card">
+                        <div className="exp-card-bar">
+                          <span className="exp-card-dot red" />
+                          <span className="exp-card-dot amber" />
+                          <span className="exp-card-dot green" />
+                          <span className="exp-card-path">{exp.path}</span>
+                          <span className="exp-card-date">{exp.date}</span>
+                        </div>
+                        <div className="exp-card-body">
+                          <div className="exp-card-role">{exp.role}</div>
+                          <div className="exp-card-company">{exp.company}</div>
+                          <div className="exp-card-location">{exp.location}</div>
+                          <ul className="exp-card-bullets">
+                            {exp.bullets.map((b, j) => <li key={j}>{b}</li>)}
+                          </ul>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </SectionLoader>
 
-            {/* ---- PROJECTS (3D tilt cards) ---- */}
+            {/* ---- PROJECTS ---- */}
             <SectionLoader command="find ~/projects --type hackathon" id="projects">
               <div className="section-inner">
                 <div className="section-header">
@@ -398,12 +393,13 @@ export default function App() {
                   {projects.map((proj, i) => (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 24 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.1, duration: 0.4 }}
+                      transition={{ delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
-                      <TiltCard className="project-card">
+                      <TiltCard className="project-card" style={{ '--project-accent': proj.accent } as React.CSSProperties}>
+                        <div className="project-accent-line" style={{ background: `linear-gradient(90deg, ${proj.accent}, transparent)` }} />
                         <div className="project-card-bar">
                           <span className="project-card-dot red" />
                           <span className="project-card-dot amber" />
@@ -446,13 +442,30 @@ export default function App() {
                   <h2 className="section-title">Contact</h2>
                   <div className="section-divider" />
                 </div>
+
+                <motion.div
+                  className="contact-cta"
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <p className="contact-cta-text">
+                    Interested in working together? Let's connect.
+                  </p>
+                  <a href="mailto:rchintak@umd.edu" className="contact-cta-btn">
+                    <span className="contact-cta-icon">$</span>
+                    <span>sudo hire rohan</span>
+                  </a>
+                </motion.div>
+
                 <div className="contact-grid">
                   {[
-                    { href: 'mailto:rchintak@umd.edu', label: 'Email', value: 'rchintak@umd.edu' },
-                    { href: 'tel:240-438-1333', label: 'Phone', value: '240-438-1333' },
-                    { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', value: 'rohan-chintakindi', ext: true },
-                    { href: 'https://github.com/RohanChintakindi', label: 'GitHub', value: 'RohanChintakindi', ext: true },
-                    { href: 'https://devpost.com/rchintak', label: 'Devpost', value: 'rchintak', ext: true },
+                    { href: 'mailto:rchintak@umd.edu', label: 'Email', value: 'rchintak@umd.edu', icon: '@' },
+                    { href: 'tel:240-438-1333', label: 'Phone', value: '240-438-1333', icon: '#' },
+                    { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', value: 'rohan-chintakindi', ext: true, icon: 'in' },
+                    { href: 'https://github.com/RohanChintakindi', label: 'GitHub', value: 'RohanChintakindi', ext: true, icon: '~/' },
+                    { href: 'https://devpost.com/rchintak', label: 'Devpost', value: 'rchintak', ext: true, icon: '<>' },
                   ].map((item) => (
                     <a
                       key={item.label}
@@ -460,7 +473,7 @@ export default function App() {
                       className="contact-item"
                       {...(item.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     >
-                      <div className="contact-icon">{'>'}</div>
+                      <div className="contact-icon">{item.icon}</div>
                       <div>
                         <div className="contact-label">{item.label}</div>
                         <div className="contact-value">{item.value}</div>
@@ -473,13 +486,23 @@ export default function App() {
 
             {/* ---- FOOTER ---- */}
             <footer className="footer">
-              <span className="footer-prompt">rohan@portfolio:~$</span>{' '}
-              echo "Thanks for visiting."
-              <span className="footer-cursor" />
-              <br /><br />
-              <span className="footer-meta">
-                Built with React + TypeScript + Motion · Ctrl+` to open terminal · {unlockedCount} achievements unlocked
-              </span>
+              <div className="footer-divider">
+                {'─'.repeat(40)}
+              </div>
+              <div className="footer-main">
+                <span className="footer-prompt">rohan@portfolio:~$</span>{' '}
+                echo "Thanks for visiting."
+                <span className="footer-cursor" />
+              </div>
+              <div className="footer-meta">
+                Built with React + TypeScript + Motion
+              </div>
+              <div className="footer-meta">
+                Ctrl+` to open terminal · {unlockedCount} achievements unlocked
+              </div>
+              <div className="footer-copyright">
+                <span className="footer-year">{new Date().getFullYear()}</span> · Rohan Chintakindi
+              </div>
             </footer>
           </div>
 

@@ -129,6 +129,7 @@ export interface Project {
   desc: string;
   tech: string[];
   cmd: string;
+  accent: string;
 }
 
 export const projects: Project[] = [
@@ -138,6 +139,7 @@ export const projects: Project[] = [
     desc: 'Blockchain-based ticketing & loyalty platform on Sui with transparent resale, policy-enforced transfers, on-chain loyalty tiers, and dynamic pricing via a Next.js + Sui dApp Kit frontend.',
     tech: ['Sui', 'Move', 'Next.js', 'TypeScript', 'React', 'Tailwind'],
     cmd: './run suitix --demo',
+    accent: '#00e5ff',
   },
   {
     name: 'MediCall',
@@ -145,6 +147,7 @@ export const projects: Project[] = [
     desc: 'Multilingual voice-first healthcare assistant for triage, scheduling, and insurance verification with real-time speech synthesis. Designed shared deployments enabling instant hospital onboarding with ~30% cost reduction.',
     tech: ['OpenAI', 'ElevenLabs', 'Twilio', 'n8n', 'Next.js', 'Flask'],
     cmd: './run medicall --voice',
+    accent: '#da70ff',
   },
   {
     name: 'ClinicFlow AI',
@@ -152,6 +155,7 @@ export const projects: Project[] = [
     desc: 'Voice-first AI helpdesk automating clinical triage, appointment booking, and follow-ups. Multi-agent workflows for scheduling, reminders, and analytics with a real-time monitoring dashboard.',
     tech: ['OpenAI', 'Twilio', 'n8n', 'MongoDB', 'Flask', 'Next.js'],
     cmd: './run clinicflow --start',
+    accent: '#ffb020',
   },
   {
     name: 'Roameo',
@@ -159,6 +163,7 @@ export const projects: Project[] = [
     desc: 'Conversational AI travel planner automating trip booking through chat and voice. GPT-4 + Google APIs for real-time itineraries with ElevenLabs speech and n8n-powered automation workflows.',
     tech: ['OpenAI', 'Gemini', 'ElevenLabs', 'Twilio', 'React', 'Flask'],
     cmd: './run roameo --plan',
+    accent: '#39ff75',
   },
 ];
 
@@ -174,31 +179,31 @@ export const skillCategories: SkillCategory[] = [
     label: 'Languages',
     value: 'Java, Python, TypeScript, JavaScript, C, C#, Rust, OCaml, SQL, HTML/CSS, Assembly',
     usage: 94,
-    color: '#63d68d',
+    color: '#39ff75',
   },
   {
     label: 'Frameworks',
     value: 'React, Flask, .NET, Node.js, REST APIs, OAuth2, CQRS, Clean Architecture',
     usage: 88,
-    color: '#56b6c2',
+    color: '#00e5ff',
   },
   {
     label: 'Systems',
     value: 'UNIX/Linux, Bash',
     usage: 72,
-    color: '#e0a040',
+    color: '#ffb020',
   },
   {
     label: 'Cloud/DevOps',
     value: 'Azure, AWS, Docker, GitHub Actions, CI/CD',
     usage: 81,
-    color: '#c678dd',
+    color: '#da70ff',
   },
   {
     label: 'ML/AI',
     value: 'PyTorch, Model Fine-Tuning, GPU Inference Pipelines',
     usage: 76,
-    color: '#e05555',
+    color: '#ff4444',
   },
 ];
 

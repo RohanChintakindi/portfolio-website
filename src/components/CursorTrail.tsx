@@ -6,8 +6,8 @@ interface Point {
   age: number;
 }
 
-// Softer green matching --green-bright: #63d68d → rgb(99, 214, 141)
-const R = 99, G = 214, B = 141;
+// Neon green matching --green-bright: #39ff75 → rgb(57, 255, 117)
+const R = 57, G = 255, B = 117;
 
 export default function CursorTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

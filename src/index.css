@@ -1,32 +1,32 @@
 :root {
-  /* ---- Backgrounds (blue-tinted dark, easier on eyes) ---- */
-  --bg-primary: #0c0e14;
-  --bg-secondary: #12161e;
-  --bg-card: #151a24;
-  --bg-card-hover: #1c2233;
+  /* ---- Backgrounds (true black) ---- */
+  --bg-primary: #050505;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #0d0d0d;
+  --bg-card-hover: #141414;
 
-  /* ---- Green (warm phosphor, not neon) ---- */
-  --green-bright: #63d68d;
-  --green-dim: #44b86a;
-  --green-muted: #2e8f4f40;
-  --green-ghost: #44b86a08;
-  --green-glow: 0 0 8px #44b86a30, 0 0 24px #2e8f4f10;
+  /* ---- Green (neon but not blinding) ---- */
+  --green-bright: #39ff75;
+  --green-dim: #2bcc5b;
+  --green-muted: #1da84550;
+  --green-ghost: #2bcc5b0c;
+  --green-glow: 0 0 10px #2bcc5b40, 0 0 30px #1da84520;
 
-  /* ---- Accents (desaturated, livable) ---- */
-  --amber: #e0a040;
-  --red: #e05555;
-  --cyan: #56b6c2;
-  --magenta: #c678dd;
-  --purple: #8b5cf6;
+  /* ---- Accents (vivid neon, slightly tamed) ---- */
+  --amber: #ffb020;
+  --red: #ff4444;
+  --cyan: #00e5ff;
+  --magenta: #da70ff;
+  --purple: #a78bfa;
 
-  /* ---- Text (readable first) ---- */
-  --text-primary: #c5c8c6;
-  --text-secondary: #7a7e82;
-  --text-dim: #4b5058;
+  /* ---- Text ---- */
+  --text-primary: #d0d0d0;
+  --text-secondary: #707070;
+  --text-dim: #404040;
 
   /* ---- Borders ---- */
-  --border: #1e2330;
-  --border-bright: #2c3344;
+  --border: #1a1a1a;
+  --border-bright: #2a2a2a;
 
   /* ---- Typography ---- */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
@@ -36,31 +36,31 @@
 
 /* ---- Theme variants ---- */
 [data-theme="amber"] {
-  --green-bright: #e0a040;
-  --green-dim: #c08830;
-  --green-muted: #9a6a2040;
-  --green-ghost: #c0883008;
+  --green-bright: #ffb020;
+  --green-dim: #cc8a10;
+  --green-muted: #cc8a1050;
+  --green-ghost: #cc8a100c;
 }
 
 [data-theme="cyan"] {
-  --green-bright: #56b6c2;
-  --green-dim: #3d8f9a;
-  --green-muted: #2a6e7740;
-  --green-ghost: #3d8f9a08;
+  --green-bright: #00e5ff;
+  --green-dim: #00b8cc;
+  --green-muted: #00b8cc50;
+  --green-ghost: #00b8cc0c;
 }
 
 [data-theme="purple"] {
-  --green-bright: #c678dd;
-  --green-dim: #a855c0;
-  --green-muted: #7c3aab40;
-  --green-ghost: #a855c008;
+  --green-bright: #da70ff;
+  --green-dim: #b050dd;
+  --green-muted: #b050dd50;
+  --green-ghost: #b050dd0c;
 }
 
 [data-theme="red"] {
-  --green-bright: #e05555;
-  --green-dim: #c04040;
-  --green-muted: #9a2a2a40;
-  --green-ghost: #c0404008;
+  --green-bright: #ff4444;
+  --green-dim: #cc2020;
+  --green-muted: #cc202050;
+  --green-ghost: #cc20200c;
 }
 
 *, *::before, *::after {
@@ -145,7 +145,7 @@ a, button, input, [role="button"] {
   height: 100%;
   pointer-events: none;
   z-index: 9997;
-  background: radial-gradient(ellipse at center, transparent 65%, rgba(0,0,0,0.4) 100%);
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%);
 }
 
 /* ---- Cursor Trail Canvas ---- */
@@ -306,7 +306,7 @@ a:hover::after {
   justify-content: center;
   pointer-events: none;
   animation: konami-flash 5s ease-in-out forwards;
-  background: rgba(12, 14, 20, 0.6);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .konami-text {
@@ -342,7 +342,7 @@ a:hover::after {
   padding: 10px 16px;
   border-radius: 3px;
   border: 1px solid var(--border-bright);
-  background: rgba(18, 22, 30, 0.96);
+  background: rgba(5, 5, 5, 0.96);
   backdrop-filter: blur(8px);
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -410,7 +410,7 @@ a:hover::after {
   top: 10px;
   right: 10px;
   font-size: 0.55rem;
-  color: rgba(99, 214, 141, 0.15);
+  color: rgba(57, 255, 117, 0.15);
   font-family: var(--font-mono);
   letter-spacing: 2px;
 }
@@ -466,21 +466,6 @@ a:hover::after {
   color: var(--text-secondary);
   font-size: 0.8rem;
   margin-top: 12px;
-}
-
-/* ================================================
-   TEXT SCRAMBLE ON TAB RETURN
-   ================================================ */
-
-@keyframes text-scramble {
-  0% { filter: blur(3px) brightness(1.3); letter-spacing: 4px; }
-  30% { filter: blur(2px) brightness(1.1); letter-spacing: 2px; }
-  60% { filter: blur(1px) brightness(1.05); letter-spacing: 1px; }
-  100% { filter: blur(0) brightness(1); letter-spacing: normal; }
-}
-
-.text-scramble-active * {
-  animation: text-scramble 0.8s ease-out forwards !important;
 }
 
 /* ================================================

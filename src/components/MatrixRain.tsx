@@ -11,8 +11,8 @@ interface Drop {
   chars: string[];
 }
 
-// Softer green matching --green-bright: #63d68d → rgb(99, 214, 141)
-const R = 99, G = 214, B = 141;
+// Neon green matching --green-bright: #39ff75 → rgb(57, 255, 117)
+const R = 57, G = 255, B = 117;
 
 export default function MatrixRain({ intense = false }: MatrixRainProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -70,7 +70,7 @@ export default function MatrixRain({ intense = false }: MatrixRainProps) {
       const fadeAlpha = isIntense ? 0.06 : 0.08;
       const baseAlpha = isIntense ? 0.4 : 0.22;
 
-      ctx.fillStyle = `rgba(12, 14, 20, ${fadeAlpha})`;
+      ctx.fillStyle = `rgba(5, 5, 5, ${fadeAlpha})`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
 

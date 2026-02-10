@@ -3,9 +3,10 @@ import { useRef, type ReactNode } from 'react';
 interface TiltCardProps {
   children: ReactNode;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export default function TiltCard({ children, className = '' }: TiltCardProps) {
+export default function TiltCard({ children, className = '', style }: TiltCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -40,6 +41,7 @@ export default function TiltCard({ children, className = '' }: TiltCardProps) {
     <div
       ref={cardRef}
       className={`tilt-card ${className}`}
+      style={style}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
