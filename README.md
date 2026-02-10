@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# rohan@portfolio:~$
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![CI Build](https://github.com/RohanChintakindi/portfolio-website/actions/workflows/ci.yml/badge.svg)](https://github.com/RohanChintakindi/portfolio-website/actions/workflows/ci.yml)
+[![Deploy](https://img.shields.io/badge/vercel-deployed-brightgreen?logo=vercel)](https://portfolio-website-rohanchintakindis-projects.vercel.app)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)](https://react.dev/)
 
-Currently, two official plugins are available:
+Terminal-themed personal portfolio website with CRT effects, matrix rain, ASCII art, boot sequence animation, and interactive command line.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Live:** [portfolio-website-rohanchintakindis-projects.vercel.app](https://portfolio-website-rohanchintakindis-projects.vercel.app)
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 19** + **TypeScript** + **Vite**
+- **Motion** (Framer Motion) for animations
+- **Vercel** for deployment
+- **GitHub Actions** for CI
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- BIOS-style boot sequence with SSH connection animation
+- Matrix rain canvas background
+- CRT scanlines, noise, vignette, and flicker effects
+- Interactive command line (Ctrl + `)
+- ASCII art hero with typewriter reveal
+- Neofetch / htop-style skills display
+- Glitch text on hover
+- Custom cursor trail
+- Konami code easter egg
+- Tmux-style status bar
+- Scroll-triggered section loading animations
+- Fully responsive
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Development
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
 ```
