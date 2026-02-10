@@ -6,6 +6,9 @@ interface Point {
   age: number;
 }
 
+// Softer green matching --green-bright: #63d68d → rgb(99, 214, 141)
+const R = 99, G = 214, B = 141;
+
 export default function CursorTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointsRef = useRef<Point[]>([]);
@@ -27,90 +30,65 @@ export default function CursorTrail() {
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
-      pointsRef.current.push({
-        x: e.clientX,
-        y: e.clientY,
-        age: 0,
-      });
-
-      // Keep max 50 points
-      if (pointsRef.current.length > 50) {
-        pointsRef.current = pointsRef.current.slice(-50);
+      pointsRef.current.push({ x: e.clientX, y: e.clientY, age: 0 });
+      if (pointsRef.current.length > 40) {
+        pointsRef.current = pointsRef.current.slice(-40);
       }
     };
-
     window.addEventListener('mousemove', handleMouseMove);
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Age all points
       pointsRef.current = pointsRef.current
         .map((p) => ({ ...p, age: p.age + 1 }))
-        .filter((p) => p.age < 30);
+        .filter((p) => p.age < 25);
 
-      // Draw phosphor trail
       for (const point of pointsRef.current) {
-        const alpha = Math.max(0, 1 - point.age / 30);
-        const size = Math.max(1, 4 * alpha);
+        const alpha = Math.max(0, 1 - point.age / 25);
+        const size = Math.max(1, 3 * alpha);
 
-        // Outer glow
         ctx.beginPath();
-        ctx.arc(point.x, point.y, size * 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 65, ${alpha * 0.08})`;
+        ctx.arc(point.x, point.y, size * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${R}, ${G}, ${B}, ${alpha * 0.06})`;
         ctx.fill();
 
-        // Inner glow
         ctx.beginPath();
-        ctx.arc(point.x, point.y, size * 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 65, ${alpha * 0.15})`;
+        ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${R}, ${G}, ${B}, ${alpha * 0.12})`;
         ctx.fill();
 
-        // Core
         ctx.beginPath();
-        ctx.arc(point.x, point.y, size * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 65, ${alpha * 0.4})`;
+        ctx.arc(point.x, point.y, size * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${R}, ${G}, ${B}, ${alpha * 0.25})`;
         ctx.fill();
       }
 
-      // Draw cursor crosshair
+      // Crosshair cursor
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
-      const cs = 8;
+      const cs = 7;
 
-      ctx.strokeStyle = 'rgba(0, 255, 65, 0.6)';
+      ctx.strokeStyle = `rgba(${R}, ${G}, ${B}, 0.45)`;
       ctx.lineWidth = 1;
-      ctx.shadowColor = '#00ff41';
-      ctx.shadowBlur = 4;
+      ctx.shadowColor = `rgba(${R}, ${G}, ${B}, 0.3)`;
+      ctx.shadowBlur = 3;
 
-      // Horizontal
       ctx.beginPath();
-      ctx.moveTo(mx - cs, my);
-      ctx.lineTo(mx - 3, my);
-      ctx.stroke();
+      ctx.moveTo(mx - cs, my); ctx.lineTo(mx - 3, my); ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(mx + 3, my);
-      ctx.lineTo(mx + cs, my);
-      ctx.stroke();
+      ctx.moveTo(mx + 3, my); ctx.lineTo(mx + cs, my); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(mx, my - cs); ctx.lineTo(mx, my - 3); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(mx, my + 3); ctx.lineTo(mx, my + cs); ctx.stroke();
 
-      // Vertical
-      ctx.beginPath();
-      ctx.moveTo(mx, my - cs);
-      ctx.lineTo(mx, my - 3);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(mx, my + 3);
-      ctx.lineTo(mx, my + cs);
-      ctx.stroke();
-
-      // Center dot
       ctx.beginPath();
       ctx.arc(mx, my, 1, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 255, 65, 0.8)';
+      ctx.fillStyle = `rgba(${R}, ${G}, ${B}, 0.6)`;
       ctx.fill();
 
       ctx.shadowBlur = 0;
-
       rafRef.current = requestAnimationFrame(draw);
     };
 
@@ -123,10 +101,5 @@ export default function CursorTrail() {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="cursor-trail-canvas"
-    />
-  );
+  return <canvas ref={canvasRef} className="cursor-trail-canvas" />;
 }

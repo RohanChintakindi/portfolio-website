@@ -1,25 +1,66 @@
 :root {
-  --bg-primary: #050505;
-  --bg-secondary: #0a0a0a;
-  --bg-card: #0c0c0c;
-  --bg-card-hover: #111111;
-  --green-bright: #00ff41;
-  --green-dim: #00cc33;
-  --green-muted: #00802060;
-  --green-ghost: #00ff410a;
-  --green-glow: 0 0 10px #00ff4140, 0 0 40px #00ff4115;
-  --amber: #ffb000;
-  --red: #ff3333;
-  --cyan: #00d4ff;
-  --magenta: #ff00ff;
-  --text-primary: #b8b8b8;
-  --text-secondary: #5a5a5a;
-  --text-dim: #333333;
-  --border: #1a1a1a;
-  --border-bright: #252525;
+  /* ---- Backgrounds (blue-tinted dark, easier on eyes) ---- */
+  --bg-primary: #0c0e14;
+  --bg-secondary: #12161e;
+  --bg-card: #151a24;
+  --bg-card-hover: #1c2233;
+
+  /* ---- Green (warm phosphor, not neon) ---- */
+  --green-bright: #63d68d;
+  --green-dim: #44b86a;
+  --green-muted: #2e8f4f40;
+  --green-ghost: #44b86a08;
+  --green-glow: 0 0 8px #44b86a30, 0 0 24px #2e8f4f10;
+
+  /* ---- Accents (desaturated, livable) ---- */
+  --amber: #e0a040;
+  --red: #e05555;
+  --cyan: #56b6c2;
+  --magenta: #c678dd;
+  --purple: #8b5cf6;
+
+  /* ---- Text (readable first) ---- */
+  --text-primary: #c5c8c6;
+  --text-secondary: #7a7e82;
+  --text-dim: #4b5058;
+
+  /* ---- Borders ---- */
+  --border: #1e2330;
+  --border-bright: #2c3344;
+
+  /* ---- Typography ---- */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   --font-display: 'Share Tech Mono', 'JetBrains Mono', monospace;
   --font-pixel: 'Silkscreen', monospace;
+}
+
+/* ---- Theme variants ---- */
+[data-theme="amber"] {
+  --green-bright: #e0a040;
+  --green-dim: #c08830;
+  --green-muted: #9a6a2040;
+  --green-ghost: #c0883008;
+}
+
+[data-theme="cyan"] {
+  --green-bright: #56b6c2;
+  --green-dim: #3d8f9a;
+  --green-muted: #2a6e7740;
+  --green-ghost: #3d8f9a08;
+}
+
+[data-theme="purple"] {
+  --green-bright: #c678dd;
+  --green-dim: #a855c0;
+  --green-muted: #7c3aab40;
+  --green-ghost: #a855c008;
+}
+
+[data-theme="red"] {
+  --green-bright: #e05555;
+  --green-dim: #c04040;
+  --green-muted: #9a2a2a40;
+  --green-ghost: #c0404008;
 }
 
 *, *::before, *::after {
@@ -46,7 +87,6 @@ body {
   cursor: none;
 }
 
-/* Hide cursor on all interactive elements too */
 a, button, input, [role="button"] {
   cursor: none;
 }
@@ -59,11 +99,11 @@ a, button, input, [role="button"] {
 }
 
 ::selection {
-  background: var(--green-bright);
+  background: var(--green-dim);
   color: var(--bg-primary);
 }
 
-/* ---- CRT Scanlines ---- */
+/* ---- CRT Scanlines (very subtle) ---- */
 .scanlines {
   position: fixed;
   top: 0;
@@ -76,13 +116,13 @@ a, button, input, [role="button"] {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.015) 2px,
-    rgba(0, 0, 0, 0.015) 4px
+    rgba(0, 0, 0, 0.012) 2px,
+    rgba(0, 0, 0, 0.012) 4px
   );
-  animation: scanline-drift 8s linear infinite;
+  animation: scanline-drift 10s linear infinite;
 }
 
-/* ---- Noise texture overlay ---- */
+/* ---- Noise texture ---- */
 .noise-overlay {
   position: fixed;
   top: -50%;
@@ -91,12 +131,12 @@ a, button, input, [role="button"] {
   height: 200%;
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.025;
+  opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   animation: noise-shift 0.5s steps(5) infinite;
 }
 
-/* ---- Vignette ---- */
+/* ---- Vignette (gentler) ---- */
 .vignette {
   position: fixed;
   top: 0;
@@ -105,7 +145,7 @@ a, button, input, [role="button"] {
   height: 100%;
   pointer-events: none;
   z-index: 9997;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.6) 100%);
+  background: radial-gradient(ellipse at center, transparent 65%, rgba(0,0,0,0.4) 100%);
 }
 
 /* ---- Cursor Trail Canvas ---- */
@@ -119,6 +159,27 @@ a, button, input, [role="button"] {
   z-index: 10001;
 }
 
+/* ---- Parallax Symbols ---- */
+.parallax-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.parallax-symbol {
+  position: absolute;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  opacity: 0.12;
+  user-select: none;
+  transition: transform 0.1s linear;
+}
+
 /* ---- Animations ---- */
 @keyframes blink {
   0%, 100% { opacity: 1; }
@@ -126,8 +187,8 @@ a, button, input, [role="button"] {
 }
 
 @keyframes glow-pulse {
-  0%, 100% { text-shadow: 0 0 5px var(--green-bright), 0 0 15px var(--green-muted); }
-  50% { text-shadow: 0 0 15px var(--green-bright), 0 0 40px var(--green-muted), 0 0 80px var(--green-ghost); }
+  0%, 100% { text-shadow: 0 0 4px var(--green-muted); }
+  50% { text-shadow: 0 0 8px var(--green-muted), 0 0 20px var(--green-ghost); }
 }
 
 @keyframes cursor-blink {
@@ -138,7 +199,7 @@ a, button, input, [role="button"] {
 @keyframes flicker {
   0%, 100% { opacity: 1; }
   92% { opacity: 1; }
-  93% { opacity: 0.97; }
+  93% { opacity: 0.98; }
   94% { opacity: 1; }
   96% { opacity: 0.99; }
   97% { opacity: 1; }
@@ -195,8 +256,18 @@ a, button, input, [role="button"] {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px currentColor; }
-  50% { box-shadow: 0 0 15px currentColor, 0 0 30px currentColor; }
+  0%, 100% { box-shadow: 0 0 4px currentColor; }
+  50% { box-shadow: 0 0 8px currentColor; }
+}
+
+@keyframes network-blink {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 a {
@@ -206,7 +277,7 @@ a {
   position: relative;
 }
 a:hover {
-  text-shadow: 0 0 8px var(--green-bright);
+  text-shadow: 0 0 6px var(--green-muted);
 }
 a::after {
   content: '';
@@ -216,7 +287,6 @@ a::after {
   width: 0;
   height: 1px;
   background: var(--green-bright);
-  box-shadow: 0 0 5px var(--green-bright);
   transition: width 0.3s ease;
 }
 a:hover::after {
@@ -236,13 +306,14 @@ a:hover::after {
   justify-content: center;
   pointer-events: none;
   animation: konami-flash 5s ease-in-out forwards;
+  background: rgba(12, 14, 20, 0.6);
 }
 
 .konami-text {
   font-family: var(--font-pixel);
   font-size: clamp(2rem, 8vw, 6rem);
   color: var(--green-bright);
-  text-shadow: 0 0 20px var(--green-bright), 0 0 60px var(--green-bright), 0 0 120px var(--green-dim);
+  text-shadow: 0 0 15px var(--green-dim), 0 0 40px var(--green-muted);
   letter-spacing: 8px;
 }
 

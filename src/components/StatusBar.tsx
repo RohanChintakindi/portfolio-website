@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface StatusBarProps {
   currentSection: string;
@@ -29,22 +29,30 @@ function buildProgressBar(pct: number): string {
 export default function StatusBar({ currentSection, onCommandLineToggle, commandLineOpen }: StatusBarProps) {
   const [uptime, setUptime] = useState(0);
   const [scrollPct, setScrollPct] = useState(0);
+  const [networkActivity, setNetworkActivity] = useState<boolean[]>([false, false, false, false, false]);
   const PID = 31337;
+  const networkRef = useRef<ReturnType<typeof setInterval>>();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setUptime((u) => u + 1);
-    }, 1000);
+    const interval = setInterval(() => setUptime((u) => u + 1), 1000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollPct(getScrollProgress());
-    };
+    const handleScroll = () => setScrollPct(getScrollProgress());
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fake network activity blinking
+  useEffect(() => {
+    networkRef.current = setInterval(() => {
+      setNetworkActivity(
+        Array.from({ length: 5 }, () => Math.random() > 0.4)
+      );
+    }, 300);
+    return () => clearInterval(networkRef.current);
   }, []);
 
   return (
@@ -58,6 +66,14 @@ export default function StatusBar({ currentSection, onCommandLineToggle, command
         </span>
       </div>
       <div className="status-bar-center">
+        <span className="status-network">
+          {networkActivity.map((active, i) => (
+            <span
+              key={i}
+              className={`status-net-dot ${active ? 'active' : ''}`}
+            />
+          ))}
+        </span>
         <span className="status-progress-bar">{buildProgressBar(scrollPct)}</span>
         <span className="status-pct">{scrollPct}%</span>
       </div>

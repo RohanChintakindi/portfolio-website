@@ -165,7 +165,7 @@ export const projects: Project[] = [
 export interface SkillCategory {
   label: string;
   value: string;
-  usage: number; // percentage for htop bars
+  usage: number;
   color: string;
 }
 
@@ -174,32 +174,48 @@ export const skillCategories: SkillCategory[] = [
     label: 'Languages',
     value: 'Java, Python, TypeScript, JavaScript, C, C#, Rust, OCaml, SQL, HTML/CSS, Assembly',
     usage: 94,
-    color: '#00ff41',
+    color: '#63d68d',
   },
   {
     label: 'Frameworks',
     value: 'React, Flask, .NET, Node.js, REST APIs, OAuth2, CQRS, Clean Architecture',
     usage: 88,
-    color: '#00d4ff',
+    color: '#56b6c2',
   },
   {
     label: 'Systems',
     value: 'UNIX/Linux, Bash',
     usage: 72,
-    color: '#ffb000',
+    color: '#e0a040',
   },
   {
     label: 'Cloud/DevOps',
     value: 'Azure, AWS, Docker, GitHub Actions, CI/CD',
     usage: 81,
-    color: '#ff00ff',
+    color: '#c678dd',
   },
   {
     label: 'ML/AI',
     value: 'PyTorch, Model Fine-Tuning, GPU Inference Pipelines',
     usage: 76,
-    color: '#ff3333',
+    color: '#e05555',
   },
 ];
 
 export const interests = 'Poker, Guitar, Music Production, Football, Competitive Programming, Hackathons, Chicago Bears';
+
+export const FORTUNES = [
+  '"The best way to predict the future is to implement it." — David Heinemeier Hansson',
+  '"First, solve the problem. Then, write the code." — John Johnson',
+  '"Any sufficiently advanced technology is indistinguishable from magic." — Arthur C. Clarke',
+  '"Talk is cheap. Show me the code." — Linus Torvalds',
+  '"The only way to do great work is to love what you do." — Steve Jobs',
+  '"Simplicity is the soul of efficiency." — Austin Freeman',
+  '"Code is like humor. When you have to explain it, it\'s bad." — Cory House',
+  '"Deleted code is debugged code." — Jeff Sickel',
+  '"It works on my machine." — Every developer, ever',
+  '"There are only two hard things in CS: cache invalidation and naming things." — Phil Karlton',
+];
+
+export const THEMES = ['green', 'amber', 'cyan', 'purple', 'red'] as const;
+export type ThemeName = typeof THEMES[number];
