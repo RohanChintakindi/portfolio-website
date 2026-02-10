@@ -18,6 +18,14 @@ import HackerMode from './components/HackerMode';
 import DigitalClock from './components/DigitalClock';
 import ScrollProgress from './components/ScrollProgress';
 import GradientOrbs from './components/GradientOrbs';
+import ParticleNetwork from './components/ParticleNetwork';
+import Spotlight from './components/Spotlight';
+import MagneticWrap from './components/MagneticWrap';
+import DecryptText from './components/DecryptText';
+import StatsBar from './components/StatsBar';
+import Marquee from './components/Marquee';
+import BackToTop from './components/BackToTop';
+import CursorGlow from './components/CursorGlow';
 import useKonamiCode from './hooks/useKonamiCode';
 import useAchievements from './hooks/useAchievements';
 import {
@@ -168,12 +176,15 @@ export default function App() {
     <>
       {!booted && <BootSequence onComplete={handleBootComplete} />}
 
+      <ParticleNetwork />
       <MatrixRain intense={matrixIntense} />
       <GradientOrbs />
       <ParallaxSymbols />
       <div className="scanlines" />
       <div className="noise-overlay" />
       <div className="vignette" />
+      <Spotlight />
+      <CursorGlow />
       <CursorTrail />
 
       {konamiActivated && (
@@ -291,15 +302,16 @@ export default function App() {
                     { href: 'https://github.com/RohanChintakindi', label: 'GitHub', ext: true, icon: '~/' },
                     { href: 'https://devpost.com/rchintak', label: 'Devpost', ext: true, icon: '<>' },
                   ].map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      className="hero-link"
-                      {...(link.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    >
-                      <span className="link-icon">{link.icon}</span>
-                      <span>{link.label}</span>
-                    </a>
+                    <MagneticWrap key={link.label} strength={0.3} radius={70}>
+                      <a
+                        href={link.href}
+                        className="hero-link"
+                        {...(link.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      >
+                        <span className="link-icon">{link.icon}</span>
+                        <span>{link.label}</span>
+                      </a>
+                    </MagneticWrap>
                   ))}
                 </motion.div>
               )}
@@ -319,7 +331,7 @@ export default function App() {
             <SectionLoader command="cat /etc/education">
               <div className="section-inner">
                 <div className="section-header">
-                  <h2 className="section-title">Education</h2>
+                  <h2 className="section-title"><DecryptText text="Education" /></h2>
                   <div className="section-divider" />
                 </div>
                 <motion.div
@@ -335,14 +347,18 @@ export default function App() {
                   </div>
                   <div className="edu-date">Aug 2024 — Dec 2027</div>
                 </motion.div>
+
+                <StatsBar />
               </div>
             </SectionLoader>
+
+            <Marquee />
 
             {/* ---- EXPERIENCE (TIMELINE) ---- */}
             <SectionLoader command="ls -la ~/experience/" id="experience">
               <div className="section-inner">
                 <div className="section-header">
-                  <h2 className="section-title">Experience</h2>
+                  <h2 className="section-title"><DecryptText text="Experience" /></h2>
                   <div className="section-divider" />
                 </div>
                 <div className="timeline">
@@ -386,7 +402,7 @@ export default function App() {
             <SectionLoader command="find ~/projects --type hackathon" id="projects">
               <div className="section-inner">
                 <div className="section-header">
-                  <h2 className="section-title">Projects</h2>
+                  <h2 className="section-title"><DecryptText text="Projects" /></h2>
                   <div className="section-divider" />
                 </div>
                 <div className="projects-grid">
@@ -428,7 +444,7 @@ export default function App() {
             <SectionLoader command="neofetch --skills" id="skills">
               <div className="section-inner">
                 <div className="section-header">
-                  <h2 className="section-title">Skills</h2>
+                  <h2 className="section-title"><DecryptText text="Skills" /></h2>
                   <div className="section-divider" />
                 </div>
                 <SkillBars />
@@ -439,7 +455,7 @@ export default function App() {
             <SectionLoader command="cat ~/.contact" id="contact">
               <div className="section-inner">
                 <div className="section-header">
-                  <h2 className="section-title">Contact</h2>
+                  <h2 className="section-title"><DecryptText text="Contact" /></h2>
                   <div className="section-divider" />
                 </div>
 
@@ -453,10 +469,12 @@ export default function App() {
                   <p className="contact-cta-text">
                     Interested in working together? Let's connect.
                   </p>
-                  <a href="mailto:rchintak@umd.edu" className="contact-cta-btn">
-                    <span className="contact-cta-icon">$</span>
-                    <span>sudo hire rohan</span>
-                  </a>
+                  <MagneticWrap strength={0.25} radius={100}>
+                    <a href="mailto:rchintak@umd.edu" className="contact-cta-btn">
+                      <span className="contact-cta-icon">$</span>
+                      <span>sudo hire rohan</span>
+                    </a>
+                  </MagneticWrap>
                 </motion.div>
 
                 <div className="contact-grid">
@@ -505,6 +523,8 @@ export default function App() {
               </div>
             </footer>
           </div>
+
+          <BackToTop />
 
           {/* ---- STATUS BAR ---- */}
           <StatusBar

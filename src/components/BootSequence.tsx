@@ -69,6 +69,11 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
 
+  const handleSkip = () => {
+    setExiting(true);
+    setTimeout(onComplete, 200);
+  };
+
   return (
     <AnimatePresence>
       {!exiting && (
@@ -77,6 +82,9 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
+          <button className="skip-boot" onClick={handleSkip}>
+            skip &gt;
+          </button>
           <div className="boot-content">
             {ALL_LINES.slice(0, visibleLines).map((line, i) => (
               <div
