@@ -1,31 +1,13 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import type React from 'react';
 import { motion } from 'motion/react';
 import './App.css';
-import BootSequence from './components/BootSequence';
-import MatrixRain from './components/MatrixRain';
-import GlitchText from './components/GlitchText';
-import { AsciiTypeWriter } from './components/TypeWriter';
-import TypeWriter from './components/TypeWriter';
-import CommandLine from './components/CommandLine';
-import StatusBar from './components/StatusBar';
-import CursorTrail from './components/CursorTrail';
 import SkillBars from './components/SkillBars';
 import SectionLoader from './components/SectionLoader';
 import TiltCard from './components/TiltCard';
-import ParallaxSymbols from './components/ParallaxSymbols';
-import ToastContainer, { useToasts } from './components/Toast';
-import HackerMode from './components/HackerMode';
-import DigitalClock from './components/DigitalClock';
 import ScrollProgress from './components/ScrollProgress';
-import GradientOrbs from './components/GradientOrbs';
-import ParticleNetwork from './components/ParticleNetwork';
-import Spotlight from './components/Spotlight';
 import MagneticWrap from './components/MagneticWrap';
 import DecryptText from './components/DecryptText';
-import BackToTop from './components/BackToTop';
-import CursorGlow from './components/CursorGlow';
-import useKonamiCode from './hooks/useKonamiCode';
-import useAchievements from './hooks/useAchievements';
 import AnimatedCounter from './components/AnimatedCounter';
 import {
   ASCII_NAME,
@@ -35,95 +17,20 @@ import {
   projects,
   CURRENTLY,
   STATS,
-  type ThemeName,
 } from './data/portfolio';
 
-function getTimeGreeting(): string {
-  const h = new Date().getHours();
-  if (h < 5) return 'Burning the midnight oil?';
-  if (h < 12) return 'Good morning.';
-  if (h < 17) return 'Good afternoon.';
-  if (h < 21) return 'Good evening.';
-  return 'Late night browsing?';
-}
-
-function buildBreadcrumb(section: string): string {
-  const map: Record<string, string> = {
-    about: '~',
-    experience: '~/experience',
-    projects: '~/projects',
-    skills: '~/skills',
-    contact: '~/contact',
-  };
-  return map[section] || '~';
-}
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+const toRoman = (n: number) => ROMAN[n] ?? String(n);
 
 export default function App() {
-  const [booted, setBooted] = useState(false);
-  const [commandLineOpen, setCommandLineOpen] = useState(false);
-  const [matrixIntense, setMatrixIntense] = useState(false);
   const [currentSection, setCurrentSection] = useState('about');
-  const [asciiDone, setAsciiDone] = useState(false);
-  const [heroPhase, setHeroPhase] = useState(0);
-  const [theme, setTheme] = useState<ThemeName>('green');
-  const [hackerActive, setHackerActive] = useState(false);
-  const [commandCount, setCommandCount] = useState(0);
-  const [sessionStart] = useState(() => Date.now());
-  const konamiActivated = useKonamiCode();
-  const { achievements, unlock, consumeToasts, unlockedCount } = useAchievements();
-  const { toasts, addToast, dismissToast } = useToasts();
-  const appRef = useRef<HTMLDivElement>(null);
-  const greeting = useMemo(() => getTimeGreeting(), []);
   const isMobile = useMemo(() => window.innerWidth < 600, []);
 
-  const handleBootComplete = useCallback(() => setBooted(true), []);
-
-  // Poll for achievement toasts
   useEffect(() => {
-    const interval = setInterval(() => {
-      const pending = consumeToasts();
-      pending.forEach((a) => {
-        addToast(`Achievement Unlocked!`, `${a.icon} ${a.name} — ${a.desc}`, 'achievement');
-      });
-    }, 300);
-    return () => clearInterval(interval);
-  }, [consumeToasts, addToast]);
-
-  // Apply theme
-  useEffect(() => {
-    if (theme === 'green') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // Dynamic page title
-  useEffect(() => {
-    if (!booted) return;
-    const updateTitle = () => {
-      const scrollPct = Math.round(
-        (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
-      );
-      document.title = `rohan@portfolio:${buildBreadcrumb(currentSection)} [${scrollPct}%]`;
-    };
-    window.addEventListener('scroll', updateTitle, { passive: true });
-    updateTitle();
-    return () => window.removeEventListener('scroll', updateTitle);
-  }, [booted, currentSection]);
-
-  // Terminal shortcut
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === '`') {
-        e.preventDefault();
-        setCommandLineOpen((prev) => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
+    document.title = 'Rohan Chintakindi';
   }, []);
 
-  // Track current section
   useEffect(() => {
-    if (!booted) return;
     const handleScroll = () => {
       const sections = SECTIONS.map((s) => {
         const el = document.getElementById(s);
@@ -140,280 +47,178 @@ export default function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [booted]);
-
-  // Konami
-  useEffect(() => {
-    if (konamiActivated) {
-      setMatrixIntense(true);
-      unlock('konamiMaster');
-      document.body.classList.add('konami-active');
-      const timer = setTimeout(() => {
-        setMatrixIntense(false);
-        document.body.classList.remove('konami-active');
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [konamiActivated, unlock]);
-
-  const handleNavigate = useCallback((section: string) => {
-    const el = document.getElementById(section);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
   }, []);
-
-  const handleMatrixToggle = useCallback(() => setMatrixIntense((prev) => !prev), []);
-  const handleThemeChange = useCallback((t: ThemeName) => {
-    setTheme(t);
-    addToast('Theme Changed', `Switched to ${t} mode`, 'info');
-  }, [addToast]);
-  const handleHack = useCallback(() => setHackerActive(true), []);
-  const handleHackComplete = useCallback(() => {
-    setHackerActive(false);
-    addToast('Hacking Complete', 'ACCESS GRANTED. Welcome back, root.', 'success');
-  }, [addToast]);
-  const handleCommandRun = useCallback(() => setCommandCount((c) => c + 1), []);
 
   return (
     <>
-      {!booted && <BootSequence onComplete={handleBootComplete} />}
+      <div className="mythology-bg" aria-hidden="true">
+        <div className="mythology-bg-engraving" />
+      </div>
 
-      <ParticleNetwork />
-      <MatrixRain intense={matrixIntense} />
-      <GradientOrbs />
-      <ParallaxSymbols />
-      <div className="scanlines" />
-      <div className="noise-overlay" />
-      <div className="vignette" />
-      <Spotlight />
-      <CursorGlow />
-      <CursorTrail />
+      <div className="app">
+        <ScrollProgress />
 
-      {konamiActivated && (
-        <div className="konami-overlay">
-          <div className="konami-text">ACCESS GRANTED</div>
-        </div>
-      )}
+        <nav className="cinema-nav liquid-glass animate-fade-rise">
+          <a href="#about" className="cinema-nav-logo">
+            Rohan<sup>®</sup>
+          </a>
+          <div className="cinema-nav-links">
+            {SECTIONS.map((s) => (
+              <a
+                key={s}
+                href={`#${s}`}
+                className={currentSection === s ? 'is-active' : ''}
+              >
+                {s.charAt(0).toUpperCase() + s.slice(1)}
+              </a>
+            ))}
+          </div>
+          <span className="cinema-nav-spacer" aria-hidden="true" />
+        </nav>
 
-      <HackerMode active={hackerActive} onComplete={handleHackComplete} />
-      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
-
-      {booted && (
-        <div className="app" ref={appRef}>
-          <ScrollProgress />
-
-          {/* ---- NAV ---- */}
-          <motion.nav
-            className="nav"
-            initial={{ y: -60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            <div className="nav-left">
-              <div className="nav-prompt">
-                <span className="user">rohan</span>
-                <span className="at">@</span>
-                <span className="host">portfolio</span>
-                <span className="path">:{buildBreadcrumb(currentSection)}$</span>
-              </div>
-            </div>
-            <div className="nav-links">
-              {SECTIONS.map((s, i) => (
-                <span key={s} style={{ display: 'contents' }}>
-                  {i > 0 && <span className="nav-separator">|</span>}
-                  <a href={`#${s}`} className={currentSection === s ? 'nav-active' : ''}>
-                    {s}
-                  </a>
-                </span>
+        <div className="app-content">
+          <section className="hero" id="about">
+            <motion.div
+              className="hero-currently"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
+              {CURRENTLY.map((item) => (
+                <div key={item.label} className="hero-currently-item">
+                  <span className="hero-currently-label">{item.label}</span>
+                  <span className="hero-currently-value">{item.value}</span>
+                </div>
               ))}
-            </div>
-            <div className="nav-clock">
-              <DigitalClock />
-            </div>
-          </motion.nav>
+            </motion.div>
 
-          <div className="app-content">
-            {/* ---- HERO ---- */}
-            <section className="hero" id="about">
-              <motion.div
-                className="hero-greeting"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.6 }}
-              >
-                {greeting}
-              </motion.div>
+            <motion.div
+              className="hero-ascii-wrapper"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <pre className="hero-ascii">{isMobile ? MOBILE_ASCII : ASCII_NAME}</pre>
+            </motion.div>
 
-              <motion.div
-                className="hero-ascii-wrapper"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-              >
-                <div className="hero-glow" />
-                <AsciiTypeWriter
-                  text={isMobile ? MOBILE_ASCII : ASCII_NAME}
-                  lineDelay={45}
-                  className="hero-ascii"
-                  onComplete={() => {
-                    setAsciiDone(true);
-                    setHeroPhase(1);
-                  }}
-                />
-              </motion.div>
+            <motion.p
+              className="hero-tagline"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <span className="highlight">Full-stack engineer</span>,{' '}
+              <span className="highlight">AI/ML researcher</span>, and{' '}
+              <span className="highlight">quant analyst</span> building at the intersection
+              of systems, intelligence, and markets. US Citizen.
+            </motion.p>
 
-              {heroPhase >= 1 && (
-                <motion.div
-                  className="hero-subtitle"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <TypeWriter
-                    text="$ whoami — CS + Math @ University of Maryland"
-                    speed={20}
-                    onComplete={() => setHeroPhase(2)}
-                  />
-                </motion.div>
-              )}
+            <motion.div
+              className="hero-links"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
+              {[
+                { href: 'mailto:rchintak@umd.edu', label: 'rchintak@umd.edu', icon: '@' },
+                { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', ext: true, icon: 'in' },
+                { href: 'https://github.com/RohanChintakindi', label: 'GitHub', ext: true, icon: '~/' },
+                { href: 'https://devpost.com/rchintak', label: 'Devpost', ext: true, icon: '<>' },
+              ].map((link) => (
+                <MagneticWrap key={link.label} strength={0.3} radius={70}>
+                  <a
+                    href={link.href}
+                    className="hero-link liquid-glass"
+                    {...(link.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    <span className="link-icon">{link.icon}</span>
+                    <span>{link.label}</span>
+                  </a>
+                </MagneticWrap>
+              ))}
+            </motion.div>
 
-              {heroPhase >= 2 && (
-                <motion.p
-                  className="hero-tagline"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <span className="highlight">Full-stack engineer</span>,{' '}
-                  <span className="highlight">AI/ML researcher</span>, and{' '}
-                  <span className="highlight">quant analyst</span> building at the intersection
-                  of systems, intelligence, and markets. US Citizen.
-                </motion.p>
-              )}
+            <motion.div
+              className="hero-scroll-hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+            >
+              <span className="scroll-arrow">↓</span>
+              <span>scroll</span>
+            </motion.div>
+          </section>
 
-              {heroPhase >= 2 && (
-                <motion.div
-                  className="hero-currently"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.4 }}
-                >
-                  {CURRENTLY.map((item) => (
-                    <div key={item.label} className="hero-currently-item">
-                      <span className="hero-currently-icon">{item.icon}</span>
-                      <span className="hero-currently-label">{item.label}</span>
-                      <span className="hero-currently-value">{item.value}</span>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
-              {heroPhase >= 2 && (
-                <motion.div
-                  className="hero-links"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.4 }}
-                >
-                  {[
-                    { href: 'mailto:rchintak@umd.edu', label: 'rchintak@umd.edu', icon: '@' },
-                    { href: 'https://linkedin.com/in/rohan-chintakindi', label: 'LinkedIn', ext: true, icon: 'in' },
-                    { href: 'https://github.com/RohanChintakindi', label: 'GitHub', ext: true, icon: '~/' },
-                    { href: 'https://devpost.com/rchintak', label: 'Devpost', ext: true, icon: '<>' },
-                  ].map((link) => (
-                    <MagneticWrap key={link.label} strength={0.3} radius={70}>
-                      <a
-                        href={link.href}
-                        className="hero-link"
-                        {...(link.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      >
-                        <span className="link-icon">{link.icon}</span>
-                        <span>{link.label}</span>
-                      </a>
-                    </MagneticWrap>
-                  ))}
-                </motion.div>
-              )}
-
-              <motion.div
-                className="hero-scroll-hint"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: asciiDone ? 1 : 0 }}
-                transition={{ delay: 1, duration: 0.5 }}
-              >
-                <span className="scroll-arrow">v</span>
-                <span>scroll down · Ctrl+` for terminal</span>
-              </motion.div>
-            </section>
-
-            {/* ---- EDUCATION ---- */}
-            <SectionLoader command="cat /etc/education">
-              <div className="section-inner">
-                <div className="section-header">
-                  <h2 className="section-title"><DecryptText text="Education" /></h2>
-                  <div className="section-divider" />
-                </div>
-                <motion.div
-                  className="edu-card"
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '800px' }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className="edu-main">
-                    <div className="edu-card-content">
-                      <div className="edu-school">University of Maryland, College Park</div>
-                      <div className="edu-degree">Bachelor of Science in Computer Science and Mathematics</div>
-                    </div>
-                    <div className="edu-date-badge">Aug 2024 — Dec 2027</div>
-                  </div>
-                  <div className="edu-coursework">
-                    <div className="edu-coursework-label">Relevant Coursework</div>
-                    <div className="edu-coursework-tags">
-                      {['Data Structures', 'Algorithms', 'Computer Systems', 'Linear Algebra', 'Discrete Math', 'Probability', 'Object-Oriented Programming', 'Web Development'].map((c) => (
-                        <span key={c}>{c}</span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* ---- STATS ---- */}
-                <motion.div
-                  className="stats-grid"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '800px' }}
-                  transition={{ delay: 0.1, duration: 0.5 }}
-                  style={{ marginTop: 28 }}
-                >
-                  {STATS.map((stat, i) => (
-                    <motion.div
-                      key={stat.label}
-                      className="stat-card"
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '800px' }}
-                      transition={{ delay: 0.05 * i, duration: 0.4 }}
-                    >
-                      <div className="stat-number">
-                        <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={1800} />
-                      </div>
-                      <div className="stat-label">{stat.label}</div>
-                    </motion.div>
-                  ))}
-                </motion.div>
+          <SectionLoader command="">
+            <div className="section-inner">
+              <div className="section-header">
+                <h2 className="section-title"><DecryptText text="Education" /></h2>
+                <div className="section-divider" />
               </div>
-            </SectionLoader>
-
-            {/* ---- EXPERIENCE (TIMELINE) ---- */}
-            <SectionLoader command="ls -la ~/experience/" id="experience">
-              <div className="section-inner">
-                <div className="section-header">
-                  <h2 className="section-title"><DecryptText text="Experience" /></h2>
-                  <div className="section-divider" />
+              <motion.div
+                className="edu-card"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '800px' }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="edu-main">
+                  <div className="edu-card-content">
+                    <div className="edu-school">University of Maryland, College Park</div>
+                    <div className="edu-degree">Bachelor of Science in Computer Science and Mathematics</div>
+                  </div>
+                  <div className="edu-date-badge">Aug 2024 — Dec 2027</div>
                 </div>
-                <div className="timeline">
-                  <div className="timeline-line" />
-                  {experiences.map((exp, i) => (
+                <div className="edu-coursework">
+                  <div className="edu-coursework-label">Relevant Coursework</div>
+                  <div className="edu-coursework-tags">
+                    {['Data Structures', 'Algorithms', 'Computer Systems', 'Linear Algebra', 'Discrete Math', 'Probability', 'Object-Oriented Programming', 'Web Development'].map((c) => (
+                      <span key={c}>{c}</span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="stats-grid"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '800px' }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                style={{ marginTop: 28 }}
+              >
+                {STATS.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    className="stat-card"
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '800px' }}
+                    transition={{ delay: 0.05 * i, duration: 0.4 }}
+                  >
+                    <div className="stat-number">
+                      <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={1800} />
+                    </div>
+                    <div className="stat-label">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </SectionLoader>
+
+          <SectionLoader command="" id="experience">
+            <div className="section-inner">
+              <div className="section-header">
+                <h2 className="section-title"><DecryptText text="Experience" /></h2>
+                <div className="section-divider" />
+              </div>
+              <div className="timeline">
+                <div className="timeline-line" />
+                {experiences.map((exp, i) => {
+                  const isActive = /present/i.test(exp.date);
+                  const indexLabel = toRoman(i + 1);
+                  const totalLabel = toRoman(experiences.length);
+                  return (
                     <motion.div
                       key={i}
                       className="timeline-item"
@@ -423,224 +228,165 @@ export default function App() {
                       transition={{ delay: i * 0.06, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                       <div className="timeline-marker">
-                        <div className="timeline-dot" />
+                        <div className={`timeline-dot ${isActive ? 'is-active' : ''}`} />
                       </div>
-                      <div className="exp-card">
-                        <div className="exp-card-bar">
-                          <span className="exp-card-dot red" />
-                          <span className="exp-card-dot amber" />
-                          <span className="exp-card-dot green" />
-                          <span className="exp-card-path">{exp.path}</span>
+                      <article className="exp-card">
+                        <header className="exp-card-meta">
+                          <span className="exp-card-index">{indexLabel} <span className="exp-card-index-sep">/</span> {totalLabel}</span>
                           <span className="exp-card-date">{exp.date}</span>
-                        </div>
+                          <span className="exp-card-location">{exp.location}</span>
+                          {isActive && <span className="exp-card-now">Now</span>}
+                        </header>
                         <div className="exp-card-body">
-                          <div className="exp-card-role">{exp.role}</div>
+                          <h3 className="exp-card-role">{exp.role}</h3>
                           <div className="exp-card-company">{exp.company}</div>
-                          <div className="exp-card-location">{exp.location}</div>
                           <ul className="exp-card-bullets">
                             {exp.bullets.map((b, j) => <li key={j}>{b}</li>)}
                           </ul>
                         </div>
+                      </article>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </SectionLoader>
+
+          <SectionLoader command="" id="projects">
+            <div className="section-inner">
+              <div className="section-header">
+                <h2 className="section-title"><DecryptText text="Projects" /></h2>
+                <div className="section-divider" />
+              </div>
+              <div className="projects-grid">
+                {projects.map((proj, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '800px' }}
+                    transition={{ delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  >
+                    <TiltCard className="project-card" style={{ '--project-accent': proj.accent } as React.CSSProperties}>
+                      <div className="project-rule" />
+                      <div className="project-numeral" aria-hidden="true">{toRoman(i + 1)}</div>
+                      <div className="project-card-body">
+                        <div className="project-award">{proj.award}</div>
+                        <div className="project-name">{proj.name}</div>
+                        <div className="project-desc">{proj.desc}</div>
+                        <div className="project-tech">
+                          {proj.tech.map((t) => <span key={t}>{t}</span>)}
+                        </div>
                       </div>
-                    </motion.div>
-                  ))}
-                </div>
+                    </TiltCard>
+                  </motion.div>
+                ))}
               </div>
-            </SectionLoader>
+            </div>
+          </SectionLoader>
 
-            {/* ---- PROJECTS ---- */}
-            <SectionLoader command="find ~/projects --type hackathon" id="projects">
-              <div className="section-inner">
-                <div className="section-header">
-                  <h2 className="section-title"><DecryptText text="Projects" /></h2>
-                  <div className="section-divider" />
-                </div>
-                <div className="projects-grid">
-                  {projects.map((proj, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 24 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '800px' }}
-                      transition={{ delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    >
-                      <TiltCard className="project-card" style={{ '--project-accent': proj.accent } as React.CSSProperties}>
-                        <div className="project-accent-line" style={{ background: `linear-gradient(90deg, ${proj.accent}, transparent)` }} />
-                        <div className="project-card-bar">
-                          <span className="project-card-dot red" />
-                          <span className="project-card-dot amber" />
-                          <span className="project-card-dot green" />
-                          <span className="project-card-title">{proj.name}.exe</span>
-                        </div>
-                        <div className="project-card-body">
-                          <div className="project-name"><GlitchText text={proj.name} /></div>
-                          <div className="project-award">{proj.award}</div>
-                          <div className="project-desc">{proj.desc}</div>
-                          <div className="project-tech">
-                            {proj.tech.map((t) => <span key={t}>{t}</span>)}
-                          </div>
-                          <div className="project-cmd">
-                            <span className="project-cmd-prompt">$</span> {proj.cmd}
-                          </div>
-                        </div>
-                      </TiltCard>
-                    </motion.div>
-                  ))}
-                </div>
+          <SectionLoader command="" id="skills">
+            <div className="section-inner">
+              <div className="section-header">
+                <h2 className="section-title"><DecryptText text="Skills" /></h2>
+                <div className="section-divider" />
               </div>
-            </SectionLoader>
+              <SkillBars />
+            </div>
+          </SectionLoader>
 
-            {/* ---- SKILLS ---- */}
-            <SectionLoader command="neofetch --skills" id="skills">
-              <div className="section-inner">
-                <div className="section-header">
-                  <h2 className="section-title"><DecryptText text="Skills" /></h2>
-                  <div className="section-divider" />
-                </div>
-                <SkillBars />
+          <SectionLoader command="" id="contact">
+            <div className="section-inner">
+              <div className="section-header">
+                <h2 className="section-title"><DecryptText text="Contact" /></h2>
+                <div className="section-divider" />
               </div>
-            </SectionLoader>
 
-            {/* ---- CONTACT — BENTO ---- */}
-            <SectionLoader command="cat ~/.contact" id="contact">
-              <div className="section-inner">
-                <div className="section-header">
-                  <h2 className="section-title"><DecryptText text="Contact" /></h2>
-                  <div className="section-divider" />
+              <motion.div
+                className="bento-contact"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '800px' }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="bento-card bento-cta">
+                  <div className="bento-cta-headline">Let's build something.</div>
+                  <p className="bento-cta-sub">
+                    Open to internships, full-time roles, and research collaborations.
+                    Reach out — I'm quick to respond.
+                  </p>
+                  <MagneticWrap strength={0.25} radius={100}>
+                    <a href="mailto:rchintak@umd.edu" className="bento-cta-btn liquid-glass">
+                      <span>Begin Conversation</span>
+                    </a>
+                  </MagneticWrap>
                 </div>
 
-                <motion.div
-                  className="bento-contact"
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '800px' }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {/* CTA — spans 2 columns */}
-                  <div className="bento-card bento-cta">
-                    <div className="bento-cta-headline">Let's Build Something</div>
-                    <p className="bento-cta-sub">
-                      Interested in working together? I'm always open to discussing new projects,
-                      research collaborations, or full-time opportunities.
-                    </p>
-                    <MagneticWrap strength={0.25} radius={100}>
-                      <a href="mailto:rchintak@umd.edu" className="bento-cta-btn">
-                        <span className="bento-cta-icon">$</span>
-                        <span>sudo hire rohan</span>
-                      </a>
-                    </MagneticWrap>
+                <div className="bento-card bento-status">
+                  <div className="bento-status-dot" />
+                  <div className="bento-status-label">Open to Work</div>
+                  <div className="bento-status-sub">Available for internships & full-time</div>
+                </div>
+
+                <a href="mailto:rchintak@umd.edu" className="bento-card bento-info">
+                  <div className="bento-icon">@</div>
+                  <div>
+                    <div className="bento-info-label">Email</div>
+                    <div className="bento-info-value">rchintak@umd.edu</div>
                   </div>
+                </a>
 
-                  {/* Status */}
-                  <div className="bento-card bento-status">
-                    <div className="bento-status-dot" />
-                    <div className="bento-status-label">Open to Work</div>
-                    <div className="bento-status-sub">Available for internships & full-time</div>
+                <a href="https://github.com/RohanChintakindi" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
+                  <div className="bento-icon">~/</div>
+                  <div>
+                    <div className="bento-info-label">GitHub</div>
+                    <div className="bento-info-value">RohanChintakindi</div>
                   </div>
+                </a>
 
-                  {/* Email */}
-                  <a href="mailto:rchintak@umd.edu" className="bento-card bento-info">
-                    <div className="bento-icon">@</div>
-                    <div>
-                      <div className="bento-info-label">Email</div>
-                      <div className="bento-info-value">rchintak@umd.edu</div>
-                    </div>
-                  </a>
+                <div className="bento-card bento-location">
+                  <div className="bento-coords">38.9897° N, 76.9378° W</div>
+                  <div className="bento-location-name">College Park, MD</div>
+                  <div className="bento-location-flag">US</div>
+                </div>
 
-                  {/* GitHub */}
-                  <a href="https://github.com/RohanChintakindi" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
-                    <div className="bento-icon">~/</div>
-                    <div>
-                      <div className="bento-info-label">GitHub</div>
-                      <div className="bento-info-value">RohanChintakindi</div>
-                    </div>
-                  </a>
-
-                  {/* Location */}
-                  <div className="bento-card bento-location">
-                    <div className="bento-coords">38.9897° N, 76.9378° W</div>
-                    <div className="bento-location-name">College Park, MD</div>
-                    <div className="bento-location-flag">US</div>
+                <a href="https://linkedin.com/in/rohan-chintakindi" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
+                  <div className="bento-icon">in</div>
+                  <div>
+                    <div className="bento-info-label">LinkedIn</div>
+                    <div className="bento-info-value">rohan-chintakindi</div>
                   </div>
+                </a>
 
-                  {/* LinkedIn */}
-                  <a href="https://linkedin.com/in/rohan-chintakindi" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
-                    <div className="bento-icon">in</div>
-                    <div>
-                      <div className="bento-info-label">LinkedIn</div>
-                      <div className="bento-info-value">rohan-chintakindi</div>
-                    </div>
-                  </a>
+                <a href="https://devpost.com/rchintak" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
+                  <div className="bento-icon">&lt;&gt;</div>
+                  <div>
+                    <div className="bento-info-label">Devpost</div>
+                    <div className="bento-info-value">rchintak</div>
+                  </div>
+                </a>
 
-                  {/* Devpost */}
-                  <a href="https://devpost.com/rchintak" target="_blank" rel="noopener noreferrer" className="bento-card bento-info">
-                    <div className="bento-icon">&lt;&gt;</div>
-                    <div>
-                      <div className="bento-info-label">Devpost</div>
-                      <div className="bento-info-value">rchintak</div>
-                    </div>
-                  </a>
+                <a href="tel:240-438-1333" className="bento-card bento-info">
+                  <div className="bento-icon">#</div>
+                  <div>
+                    <div className="bento-info-label">Phone</div>
+                    <div className="bento-info-value">240-438-1333</div>
+                  </div>
+                </a>
+              </motion.div>
+            </div>
+          </SectionLoader>
 
-                  {/* Phone */}
-                  <a href="tel:240-438-1333" className="bento-card bento-info">
-                    <div className="bento-icon">#</div>
-                    <div>
-                      <div className="bento-info-label">Phone</div>
-                      <div className="bento-info-value">240-438-1333</div>
-                    </div>
-                  </a>
-                </motion.div>
-              </div>
-            </SectionLoader>
-
-            {/* ---- FOOTER ---- */}
-            <footer className="footer">
-              <div className="footer-divider">
-                {'─'.repeat(40)}
-              </div>
-              <div className="footer-main">
-                <span className="footer-prompt">rohan@portfolio:~$</span>{' '}
-                echo "Thanks for visiting."
-                <span className="footer-cursor" />
-              </div>
-              <div className="footer-meta">
-                Built with React + TypeScript + Motion
-              </div>
-              <div className="footer-meta">
-                Ctrl+` to open terminal · {unlockedCount} achievements unlocked
-              </div>
-              <div className="footer-copyright">
-                <span className="footer-year">{new Date().getFullYear()}</span> · Rohan Chintakindi
-              </div>
-            </footer>
-          </div>
-
-          <BackToTop />
-
-          {/* ---- STATUS BAR ---- */}
-          <StatusBar
-            currentSection={currentSection}
-            onCommandLineToggle={() => setCommandLineOpen((prev) => !prev)}
-            commandLineOpen={commandLineOpen}
-          />
-
-          {/* ---- COMMAND LINE ---- */}
-          <CommandLine
-            isOpen={commandLineOpen}
-            onClose={() => setCommandLineOpen(false)}
-            onNavigate={handleNavigate}
-            onMatrixIntensify={handleMatrixToggle}
-            onThemeChange={handleThemeChange}
-            currentTheme={theme}
-            onHack={handleHack}
-            achievements={achievements}
-            onAchievement={unlock}
-            commandCount={commandCount}
-            onCommandRun={handleCommandRun}
-            sessionStart={sessionStart}
-          />
+          <footer className="footer">
+            <div className="footer-main" style={{ fontFamily: "var(--font-display)" }}>
+              Thanks for visiting.
+            </div>
+            <div className="footer-copyright">
+              © <span className="footer-year">{new Date().getFullYear()}</span> · Rohan Chintakindi
+            </div>
+          </footer>
         </div>
-      )}
+      </div>
     </>
   );
 }

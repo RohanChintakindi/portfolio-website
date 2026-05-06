@@ -72,9 +72,8 @@
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: var(--green-dim) var(--bg-primary);
+  scrollbar-color: hsl(0 0% 30%) var(--bg-primary);
   font-size: 15px;
-  cursor: none;
 }
 
 body {
@@ -84,11 +83,10 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  cursor: none;
 }
 
 a, button, input, [role="button"] {
-  cursor: none;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar { width: 5px; }
@@ -492,3 +490,171 @@ a:hover::after {
   animation: blink 1s step-end infinite;
   margin: 0 1px;
 }
+
+/* ================================================
+   ✦ CINEMATIC THEME — Hermes-inspired
+   ================================================ */
+
+:root {
+  /* Display + body fonts */
+  --font-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+
+  /* HSL design tokens — warm sepia/gold to match Mt. Olympus image */
+  --background: 28 30% 9%;
+  --foreground: 38 35% 96%;
+  --muted-foreground: 30 18% 68%;
+  --primary: 38 35% 96%;
+  --primary-foreground: 28 30% 6%;
+  --secondary: 28 22% 12%;
+  --muted: 28 22% 12%;
+  --accent: 38 60% 60%;
+  --border-hsl: 30 25% 22%;
+  --input: 30 25% 22%;
+
+  /* Resolved cinematic palette */
+  --c-bg: hsl(var(--background));
+  --c-bg-deep: hsl(28 35% 5%);
+  --c-fg: hsl(var(--foreground));
+  --c-muted: hsl(var(--muted-foreground));
+  --c-edge: hsl(var(--border-hsl));
+  --c-accent: hsl(38 60% 70%);
+  --c-card-surface: hsl(28 35% 5% / 0.82);
+  --c-card-surface-hover: hsl(28 38% 7% / 0.92);
+  --c-card-border: hsl(38 30% 80% / 0.12);
+  --c-card-border-hover: hsl(38 60% 75% / 0.28);
+  --c-card-shadow-hover: 0 12px 40px hsl(28 50% 2% / 0.5), inset 0 1px 1px hsl(38 60% 90% / 0.12);
+  --c-card-blur: blur(22px) saturate(1.15);
+}
+
+/* Body now reads as cinematic editorial — Inter body, deep navy bg */
+body {
+  font-family: var(--font-body);
+  background: var(--c-bg);
+  color: var(--c-fg);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+}
+
+/* Soft scrollbar in the new palette */
+html {
+  scrollbar-color: hsl(0 0% 30%) var(--c-bg);
+}
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb { background: hsl(0 0% 30%); }
+::selection { background: rgba(255, 255, 255, 0.18); color: #fff; }
+
+/* Mythology background — Mt. Olympus image as the atmospheric anchor.
+   Per Velorah spec: no decorative blobs/radials. The image is the visual.
+   Drop a <video class="hero-video"> inside .mythology-bg to swap. */
+.mythology-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background: var(--c-bg-deep);
+  overflow: hidden;
+}
+
+/* Mount Olympus image — full-bleed. Heavily desaturated and dimmed so
+   white text reads cleanly across the whole hero. The atmosphere comes
+   from the silhouettes/clouds, not from saturated golden tones. */
+.mythology-bg-engraving {
+  position: absolute;
+  inset: 0;
+  background-image: url('/mythology.jpg');
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  filter: brightness(0.78) saturate(0.85) contrast(1.05);
+  pointer-events: none;
+  animation: mythology-drift 32s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes mythology-drift {
+  0%, 100% { transform: scale(1.02) translate3d(0, 0, 0); }
+  50%      { transform: scale(1.05) translate3d(-0.8%, -0.4%, 0); }
+}
+
+/* Light scrim — soft fall-off behind hero copy, gentle bottom fade.
+   Image reads as atmosphere; text contrast comes mostly from text-shadow. */
+.mythology-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 65% 50%,
+      hsl(28 40% 4% / 0.18) 0%,
+      hsl(28 40% 4% / 0) 75%),
+    linear-gradient(180deg,
+      transparent 0%,
+      transparent 60%,
+      hsl(28 40% 5% / 0.45) 88%,
+      hsl(28 40% 3% / 0.85) 100%);
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .mythology-bg-engraving {
+    background-position: center 45%;
+    filter: brightness(0.7) saturate(0.85) contrast(1.05);
+  }
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+/* ✦ Liquid glass — exact spec */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(8px) saturate(1.1);
+  -webkit-backdrop-filter: blur(8px) saturate(1.1);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  color: var(--c-fg);
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0) 40%,
+    rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.15) 80%,
+    rgba(255,255,255,0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.liquid-glass:hover {
+  transform: scale(1.03);
+}
+
+/* Fade-rise animations */
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-rise         { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.animate-fade-rise-delay   { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.2s both; }
+.animate-fade-rise-delay-2 { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.4s both; }
+.animate-fade-rise-delay-3 { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.6s both; }
+.animate-fade-rise-delay-4 { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.8s both; }
