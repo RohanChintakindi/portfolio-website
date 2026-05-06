@@ -1752,8 +1752,10 @@
   .nav { flex-direction: column; gap: 6px; align-items: flex-start; height: auto; padding: 10px 16px; }
   .nav-links { justify-content: flex-start; }
   .nav-clock { display: none; }
-  .hero-ascii { font-size: clamp(0.35rem, 2.5vw, 0.55rem); }
+  .hero-ascii { font-size: clamp(0.32rem, 2.2vw, 0.5rem) !important; }
   .projects-grid { grid-template-columns: 1fr; }
+  .section-header { margin-bottom: 24px !important; }
+  .section-title { font-size: clamp(1.7rem, 7vw, 2.2rem) !important; }
 
   .timeline { padding-left: 20px; }
   .timeline-marker { left: -20px; }
@@ -2540,10 +2542,20 @@
 }
 
 @media (max-width: 640px) {
-  .exp-card-meta { flex-wrap: wrap; gap: 10px 14px; }
+  .timeline-marker { top: 32px !important; }
+  .timeline-dot { width: 9px !important; height: 9px !important; }
+  .exp-card { padding: 24px 22px !important; border-radius: 12px !important; }
+  .exp-card::after { right: 22px; }
+  .exp-card-meta { flex-wrap: wrap; gap: 8px 12px; padding-bottom: 14px; margin-bottom: 16px; font-size: 0.66rem; letter-spacing: 0.14em; }
+  .exp-card-index { font-size: 0.95rem !important; }
   .exp-card-date { margin-left: 0 !important; }
   .exp-card-location { padding-left: 0; }
   .exp-card-location::before { display: none; }
+  .exp-card-now { font-size: 0.66rem; padding: 3px 10px 3px 8px; }
+  .exp-card-role { font-size: 1.3rem !important; }
+  .exp-card-company { font-size: 0.85rem !important; }
+  .exp-card-bullets { margin-top: 14px !important; }
+  .exp-card-bullets li { font-size: 0.86rem !important; line-height: 1.55 !important; padding-left: 18px !important; }
 }
 
 .exp-card-role {
@@ -2730,9 +2742,17 @@
 }
 
 @media (max-width: 640px) {
-  .project-card { padding: 32px 24px 28px 32px !important; }
-  .project-rule { left: 14px; }
-  .project-numeral { font-size: 2rem; top: 10px; right: 16px; }
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .project-card { padding: 26px 22px 24px 30px !important; border-radius: 14px !important; }
+  .project-rule { left: 14px; top: 22px; bottom: 22px; }
+  .project-numeral { font-size: 1.85rem; top: 10px; right: 14px; }
+  .project-name { font-size: 1.4rem !important; }
+  .project-award { font-size: 0.65rem !important; letter-spacing: 0.18em !important; }
+  .project-desc { font-size: 0.88rem !important; }
+  .project-tech span { font-size: 0.66rem !important; padding: 4px 10px !important; }
 }
 
 /* Skills — editorial grid (replaces htop chrome).
@@ -2775,17 +2795,23 @@
 
 
 @media (max-width: 640px) {
-  .skill-grid { padding: 8px 22px; }
+  .skill-grid { padding: 4px 18px; border-radius: 14px; }
   .skill-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
     grid-template-areas:
-      "head"
-      "pct"
-      "track"
-      "techs";
-    column-gap: 0;
+      "head pct"
+      "track track"
+      "techs techs";
+    column-gap: 12px;
+    padding: 18px 0 16px;
   }
-  .skill-pct { align-self: start !important; margin-top: 4px; }
+  .skill-row-eyebrow { gap: 8px; }
+  .skill-index { font-size: 0.85rem; }
+  .skill-label { font-size: 1.15rem !important; }
+  .skill-pct { font-size: 1.25rem !important; align-self: baseline; }
+  .skill-track { margin-top: 12px; }
+  .skill-techs { margin-top: 12px; gap: 5px; }
+  .skill-tech { font-size: 0.68rem; padding: 3px 9px; }
 }
 
 .skill-row-head {
@@ -3340,9 +3366,34 @@
 
 @media (max-width: 767px) {
   .hero {
-    padding: 120px 24px 80px !important;
+    padding: 110px 18px 80px !important;
     align-items: center !important;
     text-align: center;
   }
-  .hero-tagline { text-align: center; }
+  .hero-greeting { font-size: 0.62rem !important; letter-spacing: 0.24em !important; margin-bottom: 24px !important; }
+  .hero-greeting::before, .hero-greeting::after { width: 18px; }
+  .hero-tagline { text-align: center; font-size: 0.92rem !important; line-height: 1.55 !important; margin-bottom: 28px !important; }
+  .hero-currently {
+    padding: 14px 0 !important;
+    margin: 0 auto 24px !important;
+    gap: 4px !important;
+    max-width: 100%;
+  }
+  .hero-currently-item {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 2px !important;
+    padding: 4px 0 !important;
+    font-size: 0.7rem !important;
+  }
+  .hero-currently-label {
+    min-width: 0 !important;
+    padding-right: 0 !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.18em !important;
+  }
+  .hero-currently-label::after { display: none !important; }
+  .hero-currently-value { font-size: 1.05rem !important; }
+  .hero-link { padding: 9px 16px !important; font-size: 0.74rem !important; }
+  .hero-scroll-hint { display: none !important; }
 }
