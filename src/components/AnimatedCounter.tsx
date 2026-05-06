@@ -23,7 +23,7 @@ export default function AnimatedCounter({ end, suffix = '', prefix = '', duratio
           observer.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0, rootMargin: '800px' }
     );
 
     observer.observe(el);

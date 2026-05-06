@@ -22,7 +22,7 @@ export default function SectionLoader({ children, command, id }: SectionLoaderPr
           setPhase('loading');
         }
       },
-      { threshold: 0.1, rootMargin: '-60px' }
+      { threshold: 0, rootMargin: '2400px 0px 2400px 0px' }
     );
 
     observer.observe(el);
@@ -32,7 +32,7 @@ export default function SectionLoader({ children, command, id }: SectionLoaderPr
   // Loading -> Typing
   useEffect(() => {
     if (phase !== 'loading') return;
-    const timer = setTimeout(() => setPhase('typing'), 400);
+    const timer = setTimeout(() => setPhase('typing'), 180);
     return () => clearTimeout(timer);
   }, [phase]);
 
@@ -40,13 +40,13 @@ export default function SectionLoader({ children, command, id }: SectionLoaderPr
   useEffect(() => {
     if (phase !== 'typing') return;
     if (typedCmd.length >= command.length) {
-      const timer = setTimeout(() => setPhase('revealed'), 200);
+      const timer = setTimeout(() => setPhase('revealed'), 80);
       return () => clearTimeout(timer);
     }
 
     const timer = setTimeout(() => {
       setTypedCmd(command.slice(0, typedCmd.length + 1));
-    }, 25);
+    }, 12);
     return () => clearTimeout(timer);
   }, [phase, typedCmd, command]);
 

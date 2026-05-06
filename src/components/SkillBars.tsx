@@ -16,7 +16,7 @@ export default function SkillBars() {
           setVisible(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0, rootMargin: '800px' }
     );
 
     observer.observe(el);

@@ -39,7 +39,7 @@ function AnimatedNumber({ target, suffix = '' }: { target: string; suffix?: stri
           requestAnimationFrame(animate);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0, rootMargin: '800px' }
     );
 
     if (ref.current) observer.observe(ref.current);

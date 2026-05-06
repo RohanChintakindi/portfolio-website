@@ -81,9 +81,10 @@ const FILE_MAP: Record<string, OutputLine[]> = {
   ],
   'skills.txt': [
     { text: '  Languages:  Java, Python, TypeScript, C, C#, Rust, OCaml, SQL', className: 'cmd-info' },
-    { text: '  Frameworks: React, Flask, .NET, Node.js, REST APIs, OAuth2', className: 'cmd-info' },
+    { text: '  Frameworks: React, Next.js, Flask, FastAPI, .NET, Node.js, OAuth2', className: 'cmd-info' },
+    { text: '  AI/Agents:  LangChain, LangGraph, DSPy, MCP, RAG, AWS Bedrock', className: 'cmd-info' },
     { text: '  Cloud:      Azure, AWS, Docker, GitHub Actions, CI/CD', className: 'cmd-info' },
-    { text: '  ML/AI:      PyTorch, Model Fine-Tuning, GPU Inference', className: 'cmd-info' },
+    { text: '  ML/AI:      PyTorch, GPU Inference, Fine-Tuning, MCTS, RL', className: 'cmd-info' },
   ],
 };
 
@@ -297,8 +298,8 @@ export default function CommandLine({
         addOutput([
           { text: '  .', className: 'cmd-info' },
           { text: '  ├── about/', className: 'cmd-dir' },
-          { text: '  ├── experience/ (7 roles)', className: 'cmd-dir' },
-          { text: '  ├── projects/ (4 hackathon wins)', className: 'cmd-dir' },
+          { text: '  ├── experience/ (10 roles)', className: 'cmd-dir' },
+          { text: '  ├── projects/ (4 hackathon wins + 1 startup)', className: 'cmd-dir' },
           { text: '  ├── skills/', className: 'cmd-dir' },
           { text: '  ├── contact.txt', className: 'cmd-file' },
           { text: '  ├── resume.pdf', className: 'cmd-file' },

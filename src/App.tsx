@@ -356,7 +356,7 @@ export default function App() {
                   className="edu-card"
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: '800px' }}
                   transition={{ duration: 0.4 }}
                 >
                   <div className="edu-main">
@@ -381,7 +381,7 @@ export default function App() {
                   className="stats-grid"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: '800px' }}
                   transition={{ delay: 0.1, duration: 0.5 }}
                   style={{ marginTop: 28 }}
                 >
@@ -391,7 +391,7 @@ export default function App() {
                       className="stat-card"
                       initial={{ opacity: 0, y: 16 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
+                      viewport={{ once: true, margin: '800px' }}
                       transition={{ delay: 0.05 * i, duration: 0.4 }}
                     >
                       <div className="stat-number">
@@ -419,7 +419,7 @@ export default function App() {
                       className="timeline-item"
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
+                      viewport={{ once: true, margin: '800px' }}
                       transition={{ delay: i * 0.06, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                       <div className="timeline-marker">
@@ -461,7 +461,7 @@ export default function App() {
                       key={i}
                       initial={{ opacity: 0, y: 24 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
+                      viewport={{ once: true, margin: '800px' }}
                       transition={{ delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                       <TiltCard className="project-card" style={{ '--project-accent': proj.accent } as React.CSSProperties}>
@@ -513,7 +513,7 @@ export default function App() {
                   className="bento-contact"
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: '800px' }}
                   transition={{ duration: 0.5 }}
                 >
                   {/* CTA — spans 2 columns */}
