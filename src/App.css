@@ -2758,19 +2758,21 @@
 
 .skill-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
     "head pct"
     "track track"
     "techs techs";
-  column-gap: 36px;
-  padding: 38px 0 32px;
+  column-gap: 28px;
+  padding: 22px 0 20px;
   position: relative;
+  align-items: baseline;
 }
 
 .skill-row + .skill-row {
-  border-top: 1px solid hsl(0 0% 100% / 0.08);
+  border-top: 1px solid hsl(38 30% 80% / 0.08);
 }
+
 
 @media (max-width: 640px) {
   .skill-grid { padding: 8px 22px; }
@@ -2783,35 +2785,35 @@
       "techs";
     column-gap: 0;
   }
-  .skill-pct { align-self: start !important; margin-top: 6px; }
+  .skill-pct { align-self: start !important; margin-top: 4px; }
 }
 
 .skill-row-head {
   grid-area: head;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  align-self: end;
+  gap: 4px;
 }
 
 .skill-row-eyebrow {
   display: flex;
   align-items: baseline;
-  gap: 14px;
+  gap: 12px;
 }
 
 .skill-index {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1rem;
-  color: hsl(0 0% 100% / 0.55);
+  font-size: 0.95rem;
+  color: hsl(38 60% 75% / 0.55);
   font-variant-numeric: oldstyle-nums;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .skill-label {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.4vw, 2.05rem);
+  font-size: clamp(1.3rem, 1.9vw, 1.65rem);
   letter-spacing: -0.02em;
   color: var(--c-fg);
   font-weight: 400;
@@ -2819,66 +2821,71 @@
   line-height: 1;
 }
 
+/* Editorial ledger fraction — N / 100 instead of a giant lonely percentage */
 .skill-pct {
   grid-area: pct;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(2.6rem, 5.4vw, 4.4rem);
-  letter-spacing: -0.03em;
-  color: hsl(0 0% 100% / 0.95);
+  font-size: clamp(1.4rem, 2.1vw, 1.85rem);
+  letter-spacing: -0.01em;
+  color: hsl(38 65% 86%);
   font-variant-numeric: oldstyle-nums tabular-nums;
-  line-height: 0.85;
-  align-self: end;
+  line-height: 1;
+  align-self: baseline;
   display: inline-flex;
-  align-items: flex-end;
+  align-items: baseline;
   gap: 2px;
+  white-space: nowrap;
 }
 
 .skill-pct-num {
   display: inline-block;
-  min-width: 1.6em;
+  min-width: 1.4em;
   text-align: right;
 }
 
-.skill-pct sup {
-  font-size: 0.32em;
-  vertical-align: super;
+.skill-pct-unit {
+  font-size: 0.55em;
   opacity: 0.5;
-  font-style: normal;
   margin-left: 3px;
-  letter-spacing: 0.06em;
+  font-style: normal;
+  letter-spacing: 0.04em;
   align-self: flex-start;
-  margin-top: 0.5em;
 }
 
+/* Segmented track — Roman tally chunks rather than a single hairline */
 .skill-track {
   grid-area: track;
-  height: 1px;
-  background: hsl(0 0% 100% / 0.08);
-  margin-top: 26px;
+  height: 2px;
+  margin-top: 14px;
   overflow: visible;
   position: relative;
+  background:
+    repeating-linear-gradient(90deg,
+      hsl(38 30% 80% / 0.10) 0,
+      hsl(38 30% 80% / 0.10) calc(10% - 2px),
+      transparent calc(10% - 2px),
+      transparent 10%);
 }
 
 .skill-fill {
-  height: 1px;
+  height: 100%;
   background: linear-gradient(90deg,
-    hsl(0 0% 100% / 0.45) 0%,
-    hsl(0 0% 100% / 0.95) 100%);
+    hsl(38 75% 70% / 0.55) 0%,
+    hsl(38 80% 80% / 0.95) 60%,
+    hsl(38 90% 88%) 100%);
+  box-shadow: 0 0 6px hsl(38 80% 70% / 0.4);
   position: relative;
-}
-
-.skill-fill::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translate(50%, -50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: hsl(0 0% 100%);
-  box-shadow: 0 0 10px hsl(0 0% 100% / 0.6);
+  -webkit-mask: repeating-linear-gradient(90deg,
+    #000 0,
+    #000 calc(10% - 2px),
+    transparent calc(10% - 2px),
+    transparent 10%);
+          mask: repeating-linear-gradient(90deg,
+    #000 0,
+    #000 calc(10% - 2px),
+    transparent calc(10% - 2px),
+    transparent 10%);
 }
 
 .skill-techs {
@@ -2886,25 +2893,25 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 22px;
+  margin-top: 14px;
 }
 
 .skill-tech {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.01em;
-  color: hsl(0 0% 100% / 0.82);
-  padding: 5px 12px;
+  color: hsl(38 30% 92% / 0.78);
+  padding: 4px 11px;
   border-radius: 999px;
-  background: hsl(0 0% 100% / 0.04);
-  border: 1px solid hsl(0 0% 100% / 0.10);
+  background: hsl(38 30% 80% / 0.04);
+  border: 1px solid hsl(38 30% 80% / 0.10);
   transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
 .skill-tech:hover {
-  background: hsl(0 0% 100% / 0.10);
-  border-color: hsl(0 0% 100% / 0.30);
-  color: var(--c-fg);
+  background: hsl(38 60% 75% / 0.10);
+  border-color: hsl(38 60% 75% / 0.30);
+  color: hsl(38 70% 92%);
   transform: translateY(-1px);
 }
 

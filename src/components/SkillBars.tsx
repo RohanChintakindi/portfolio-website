@@ -43,7 +43,7 @@ export default function SkillBars() {
               </div>
               <span className="skill-pct">
                 <span className="skill-pct-num">{visible ? skill.usage : 0}</span>
-                <sup>%</sup>
+                <span className="skill-pct-unit">%</span>
               </span>
             </div>
 
