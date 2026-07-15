@@ -4,6 +4,7 @@ export default defineType({
   name: 'post',
   title: 'Post',
   type: 'document',
+  initialValue: () => ({ publishedAt: new Date().toISOString() }),
   fields: [
     defineField({
       name: 'title',
@@ -13,7 +14,7 @@ export default defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'Slug',
+      title: 'URL',
       type: 'slug',
       options: { source: 'title', maxLength: 96 },
       validation: (rule) => rule.required(),
@@ -28,16 +29,9 @@ export default defineType({
     }),
     defineField({
       name: 'publishedAt',
-      title: 'Published at',
-      description: 'Posts without a published date stay out of the public site.',
+      title: 'Publish date',
       type: 'datetime',
-    }),
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [defineArrayMember({ type: 'string' })],
-      options: { layout: 'tags' },
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'mainImage',
@@ -56,7 +50,7 @@ export default defineType({
     }),
     defineField({
       name: 'body',
-      title: 'Body',
+      title: 'Article',
       type: 'array',
       validation: (rule) => rule.required(),
       of: [

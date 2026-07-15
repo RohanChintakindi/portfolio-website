@@ -31,6 +31,8 @@
 - Home, Writing, Work, Experience, GitHub, and theme controls are keyboard-focusable and visible in Aside's accessibility snapshot.
 - Theme control changed `data-theme` from dark to light and updated its accessible label.
 - Writing rendered zero post rows when Sanity was unconfigured, as intended.
+- The private `/admin` route loaded the authenticated rich-text Studio, exposed only the Post collection, and showed no existing documents.
+- The connected public dataset returned an empty post result, so no placeholder article appears on the site.
 - Work rendered a four-column grid at desktop width, with two video iframes and three linked images.
 - The first experience row uses native `details`/`summary`; its View details label changes to Close when expanded. All ten existing roles are grouped into seven Current and three Earlier entries.
 - Aside reported no application errors during the checked home, writing, work, and theme states.
@@ -49,6 +51,7 @@
 - [x] Work, Experience, and Background are separate destinations.
 - [x] Devpost project media uses real source assets.
 - [x] Writing remains empty until the owner publishes.
+- [x] Private on-site editor supports drafts, rich text, cover images, inline images, and publishing.
 - [x] Light and dark themes work.
 - [x] Production build passes.
 - [x] Active source files pass ESLint.
