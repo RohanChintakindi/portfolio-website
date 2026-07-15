@@ -1,660 +1,93 @@
+@import '@fontsource-variable/geist';
+
 :root {
-  /* ---- Backgrounds (deep blue-black) ---- */
-  --bg-primary: #0a0a14;
-  --bg-secondary: #0f0f1c;
-  --bg-card: #141426;
-  --bg-card-hover: #1a1a32;
-
-  /* ---- Primary accent (soft lavender) ---- */
-  --green-bright: #a78bfa;
-  --green-dim: #8b74e0;
-  --green-muted: #7c6bcf50;
-  --green-ghost: #7c6bcf0c;
-  --green-glow: 0 0 10px #7c6bcf40, 0 0 30px #7c6bcf20;
-
-  /* ---- Accents (refined multi-color) ---- */
-  --amber: #f59e0b;
-  --red: #ef4444;
-  --cyan: #38bdf8;
-  --magenta: #f472b6;
-  --purple: #c084fc;
-
-  /* ---- Text (warm cream) ---- */
-  --text-primary: #e2e0dc;
-  --text-secondary: #8888a0;
-  --text-dim: #4a4a64;
-
-  /* ---- Borders ---- */
-  --border: #1a1a2e;
-  --border-bright: #28283e;
-
-  /* ---- Typography ---- */
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-  --font-display: 'Share Tech Mono', 'JetBrains Mono', monospace;
-  --font-pixel: 'Silkscreen', monospace;
+  font-family: 'Geist Variable', 'Helvetica Neue', Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --background: #fbfbfa;
+  --heading: #10100f;
+  --text: #2e3747;
+  --muted: #657080;
+  --link: #172236;
+  --underline: #8893a3;
+  --rule: #dfe2e5;
+  --rule-strong: #929aa5;
+  --code: #f0f1f2;
+  background: var(--background);
+  color: var(--text);
+  scroll-behavior: smooth;
 }
 
-/* ---- Theme variants ---- */
-[data-theme="amber"] {
-  --green-bright: #f59e0b;
-  --green-dim: #d97706;
-  --green-muted: #d9770650;
-  --green-ghost: #d977060c;
+:root[data-theme='dark'] {
+  --background: #111110;
+  --heading: #f2f2ee;
+  --text: #c8c8c1;
+  --muted: #92928c;
+  --link: #d9e9f8;
+  --underline: #64788a;
+  --rule: #343431;
+  --rule-strong: #74746f;
+  --code: #1c1c1a;
 }
 
-[data-theme="cyan"] {
-  --green-bright: #38bdf8;
-  --green-dim: #0ea5e9;
-  --green-muted: #0ea5e950;
-  --green-ghost: #0ea5e90c;
-}
-
-[data-theme="purple"] {
-  --green-bright: #f472b6;
-  --green-dim: #ec4899;
-  --green-muted: #ec489950;
-  --green-ghost: #ec48990c;
-}
-
-[data-theme="red"] {
-  --green-bright: #ef4444;
-  --green-dim: #dc2626;
-  --green-muted: #dc262650;
-  --green-ghost: #dc26260c;
-}
-
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
+* {
   box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: hsl(0 0% 30%) var(--bg-primary);
-  font-size: 15px;
+  background: var(--background);
 }
 
 body {
-  font-family: var(--font-mono);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.7;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-a, button, input, [role="button"] {
-  cursor: pointer;
-}
-
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb {
-  background: var(--green-dim);
-  border-radius: 3px;
-}
-
-::selection {
-  background: var(--green-dim);
-  color: var(--bg-primary);
-}
-
-/* ---- CRT Scanlines (very subtle) ---- */
-.scanlines {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.012) 2px,
-    rgba(0, 0, 0, 0.012) 4px
-  );
-  animation: scanline-drift 10s linear infinite;
-}
-
-/* ---- Noise texture ---- */
-.noise-overlay {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.018;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  animation: noise-shift 0.5s steps(5) infinite;
-}
-
-/* ---- Vignette (gentler) ---- */
-.vignette {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9997;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%);
-}
-
-/* ---- Cursor Trail Canvas ---- */
-.cursor-trail-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10001;
-}
-
-/* ---- Parallax Symbols ---- */
-.parallax-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.parallax-symbol {
-  position: absolute;
-  font-family: var(--font-mono);
-  color: var(--text-dim);
-  opacity: 0.12;
-  user-select: none;
-  transition: transform 0.1s linear;
-}
-
-/* ---- Animations ---- */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { text-shadow: 0 0 4px var(--green-muted); }
-  50% { text-shadow: 0 0 8px var(--green-muted), 0 0 20px var(--green-ghost); }
-}
-
-@keyframes cursor-blink {
-  0%, 100% { border-color: var(--green-bright); }
-  50% { border-color: transparent; }
-}
-
-@keyframes flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.98; }
-  94% { opacity: 1; }
-  96% { opacity: 0.99; }
-  97% { opacity: 1; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes type-in {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes glitch-clip {
-  0% { clip-path: inset(40% 0 61% 0); }
-  20% { clip-path: inset(92% 0 1% 0); }
-  40% { clip-path: inset(43% 0 1% 0); }
-  60% { clip-path: inset(25% 0 58% 0); }
-  80% { clip-path: inset(54% 0 7% 0); }
-  100% { clip-path: inset(58% 0 43% 0); }
-}
-
-@keyframes scanline-drift {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 200px; }
-}
-
-@keyframes noise-shift {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-2%, 1%); }
-  40% { transform: translate(1%, -1%); }
-  60% { transform: translate(-1%, 2%); }
-  80% { transform: translate(2%, -2%); }
-  100% { transform: translate(0, 0); }
-}
-
-@keyframes horizontal-tear {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(3px); }
-  50% { transform: translateX(-2px); }
-  75% { transform: translateX(1px); }
-  100% { transform: translateX(0); }
-}
-
-@keyframes konami-flash {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  20% { opacity: 0.6; }
-  30% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 4px currentColor; }
-  50% { box-shadow: 0 0 8px currentColor; }
-}
-
-@keyframes network-blink {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.55;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
 a {
-  color: var(--green-bright);
+  color: inherit;
   text-decoration: none;
-  transition: all 0.2s ease;
-  position: relative;
-}
-a:hover {
-  text-shadow: 0 0 6px var(--green-muted);
-}
-a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--green-bright);
-  transition: width 0.3s ease;
-}
-a:hover::after {
-  width: 100%;
 }
 
-/* ---- Konami Code Easter Egg ---- */
-.konami-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10002;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  animation: konami-flash 5s ease-in-out forwards;
-  background: rgba(6, 6, 16, 0.7);
+a:hover,
+button:hover {
+  opacity: 0.68;
 }
 
-.konami-text {
-  font-family: var(--font-pixel);
-  font-size: clamp(2rem, 8vw, 6rem);
-  color: var(--green-bright);
-  text-shadow: 0 0 15px var(--green-dim), 0 0 40px var(--green-muted);
-  letter-spacing: 8px;
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 4px;
 }
 
-.konami-active .app {
-  animation: horizontal-tear 0.1s steps(2) infinite;
+button,
+summary,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ================================================
-   TOAST NOTIFICATIONS
-   ================================================ */
-
-.toast-container {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 10003;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: none;
-  max-width: 320px;
+::selection {
+  color: var(--background);
+  background: var(--heading);
 }
 
-.toast {
-  pointer-events: auto;
-  padding: 10px 16px;
-  border-radius: 3px;
-  border: 1px solid var(--border-bright);
-  background: rgba(8, 8, 18, 0.96);
-  backdrop-filter: blur(8px);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
 
-.toast-achievement {
-  border-color: var(--amber);
-  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);
-}
-
-.toast-info {
-  border-color: var(--cyan);
-  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.08);
-}
-
-.toast-success {
-  border-color: var(--green-dim);
-  box-shadow: 0 4px 20px rgba(139, 116, 224, 0.08);
-}
-
-.toast-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
-}
-
-.toast-badge {
-  color: var(--amber);
-  font-size: 0.85rem;
-}
-
-.toast-title {
-  color: var(--green-bright);
-  font-weight: 600;
-  font-size: 0.7rem;
-  letter-spacing: 0.5px;
-}
-
-.toast-message {
-  color: var(--text-secondary);
-  font-size: 0.65rem;
-}
-
-/* ================================================
-   HACKER MODE OVERLAY
-   ================================================ */
-
-.hacker-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10004;
-  background: rgba(6, 6, 16, 0.96);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  overflow: hidden;
-}
-
-.hacker-hex {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 0.55rem;
-  color: rgba(167, 139, 250, 0.15);
-  font-family: var(--font-mono);
-  letter-spacing: 2px;
-}
-
-.hacker-content {
-  max-width: 600px;
-  padding: 40px;
-}
-
-.hacker-header {
-  color: var(--red);
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-  letter-spacing: 1px;
-}
-
-.hacker-line {
-  font-size: 0.72rem;
-  color: var(--green-dim);
-  line-height: 1.8;
-  animation: slide-up 0.15s ease forwards;
-}
-
-.hacker-progress {
-  color: var(--green-bright);
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-}
-
-.hacker-success { color: var(--green-bright); }
-.hacker-danger { color: var(--red); }
-
-.hacker-cursor {
-  color: var(--green-bright);
-  animation: blink 0.5s step-end infinite;
-}
-
-.hacker-granted {
-  text-align: center;
-}
-
-.hacker-granted-text {
-  font-family: var(--font-pixel);
-  font-size: clamp(2rem, 6vw, 4rem);
-  color: var(--green-bright);
-  text-shadow: 0 0 20px var(--green-dim), 0 0 60px var(--green-muted);
-  letter-spacing: 8px;
-  animation: glow-pulse 1s ease-in-out infinite;
-}
-
-.hacker-granted-sub {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  margin-top: 12px;
-}
-
-/* ================================================
-   DIGITAL CLOCK
-   ================================================ */
-
-.digital-clock {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.clock-digit {
-  color: var(--green-dim);
-  font-variant-numeric: tabular-nums;
-}
-
-.clock-sep {
-  color: var(--text-dim);
-  animation: blink 1s step-end infinite;
-  margin: 0 1px;
-}
-
-/* ================================================
-   ✦ CINEMATIC THEME — Hermes-inspired
-   ================================================ */
-
-:root {
-  /* Display + body fonts */
-  --font-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-
-  /* HSL design tokens — warm sepia/gold to match Mt. Olympus image */
-  --background: 28 30% 9%;
-  --foreground: 38 35% 96%;
-  --muted-foreground: 30 18% 68%;
-  --primary: 38 35% 96%;
-  --primary-foreground: 28 30% 6%;
-  --secondary: 28 22% 12%;
-  --muted: 28 22% 12%;
-  --accent: 38 60% 60%;
-  --border-hsl: 30 25% 22%;
-  --input: 30 25% 22%;
-
-  /* Resolved cinematic palette */
-  --c-bg: hsl(var(--background));
-  --c-bg-deep: hsl(28 35% 5%);
-  --c-fg: hsl(var(--foreground));
-  --c-muted: hsl(var(--muted-foreground));
-  --c-edge: hsl(var(--border-hsl));
-  --c-accent: hsl(38 60% 70%);
-  --c-card-surface: hsl(28 35% 5% / 0.82);
-  --c-card-surface-hover: hsl(28 38% 7% / 0.92);
-  --c-card-border: hsl(38 30% 80% / 0.12);
-  --c-card-border-hover: hsl(38 60% 75% / 0.28);
-  --c-card-shadow-hover: 0 12px 40px hsl(28 50% 2% / 0.5), inset 0 1px 1px hsl(38 60% 90% / 0.12);
-  --c-card-blur: blur(22px) saturate(1.15);
-}
-
-/* Body now reads as cinematic editorial — Inter body, deep navy bg */
-body {
-  font-family: var(--font-body);
-  background: var(--c-bg);
-  color: var(--c-fg);
-  line-height: 1.6;
-  letter-spacing: -0.005em;
-}
-
-/* Soft scrollbar in the new palette */
-html {
-  scrollbar-color: hsl(0 0% 30%) var(--c-bg);
-}
-::-webkit-scrollbar-track { background: var(--c-bg); }
-::-webkit-scrollbar-thumb { background: hsl(0 0% 30%); }
-::selection { background: rgba(255, 255, 255, 0.18); color: #fff; }
-
-/* Mythology background — Mt. Olympus image as the atmospheric anchor.
-   Per Velorah spec: no decorative blobs/radials. The image is the visual.
-   Drop a <video class="hero-video"> inside .mythology-bg to swap. */
-.mythology-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -10;
-  background: var(--c-bg-deep);
-  overflow: hidden;
-}
-
-/* Mount Olympus image — full-bleed. Heavily desaturated and dimmed so
-   white text reads cleanly across the whole hero. The atmosphere comes
-   from the silhouettes/clouds, not from saturated golden tones. */
-.mythology-bg-engraving {
-  position: absolute;
-  inset: 0;
-  background-image: url('/mythology.jpg');
-  background-size: cover;
-  background-position: center 35%;
-  background-repeat: no-repeat;
-  filter: brightness(0.78) saturate(0.85) contrast(1.05);
-  pointer-events: none;
-  animation: mythology-drift 32s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes mythology-drift {
-  0%, 100% { transform: scale(1.02) translate3d(0, 0, 0); }
-  50%      { transform: scale(1.05) translate3d(-0.8%, -0.4%, 0); }
-}
-
-/* Light scrim — soft fall-off behind hero copy, gentle bottom fade.
-   Image reads as atmosphere; text contrast comes mostly from text-shadow. */
-.mythology-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 65% 50%,
-      hsl(28 40% 4% / 0.18) 0%,
-      hsl(28 40% 4% / 0) 75%),
-    linear-gradient(180deg,
-      transparent 0%,
-      transparent 60%,
-      hsl(28 40% 5% / 0.45) 88%,
-      hsl(28 40% 3% / 0.85) 100%);
-  pointer-events: none;
-}
-
-@media (max-width: 767px) {
-  .mythology-bg-engraving {
-    background-position: center 45%;
-    filter: brightness(0.7) saturate(0.85) contrast(1.05);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
-
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.55;
-}
-
-/* ✦ Liquid glass — exact spec */
-.liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
-  background-blend-mode: luminosity;
-  backdrop-filter: blur(8px) saturate(1.1);
-  -webkit-backdrop-filter: blur(8px) saturate(1.1);
-  border: none;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  position: relative;
-  overflow: hidden;
-  color: var(--c-fg);
-  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-
-.liquid-glass::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.45) 0%,
-    rgba(255,255,255,0.15) 20%,
-    rgba(255,255,255,0) 40%,
-    rgba(255,255,255,0) 60%,
-    rgba(255,255,255,0.15) 80%,
-    rgba(255,255,255,0.45) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-}
-
-.liquid-glass:hover {
-  transform: scale(1.03);
-}
-
-/* Fade-rise animations */
-@keyframes fade-rise {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-rise         { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
-.animate-fade-rise-delay   { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.2s both; }
-.animate-fade-rise-delay-2 { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.4s both; }
-.animate-fade-rise-delay-3 { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.6s both; }
-.animate-fade-rise-delay-4 { animation: fade-rise 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.8s both; }
